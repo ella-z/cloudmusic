@@ -1,32 +1,47 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
   </div>
 </template>
 
+
 <style lang="scss">
+@font-face {
+  font-family: 'iconfont';  /* project id 1711563 */
+  src: url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.eot');
+  src: url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.svg#iconfont') format('svg');
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    color: #000;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+*{
+  padding:0;
+  margin:0;
+  font-size: 12px;
+  box-sizing:border-box;
+  font-family:"Times New Roman",Georgia,Serif;
+  list-style: none;
+  user-select:none; //取消双击选中文字
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width: 100vw;
+  height: 100vh;
 }
 
-#nav {
-  padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>
