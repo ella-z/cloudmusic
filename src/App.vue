@@ -8,12 +8,12 @@
 <style lang="scss">
 @font-face {
   font-family: 'iconfont';  /* project id 1711563 */
-  src: url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.eot');
-  src: url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1711563_dkpyv0yb5vb.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1711563_yf9931aoza.eot');
+  src: url('//at.alicdn.com/t/font_1711563_yf9931aoza.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1711563_yf9931aoza.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1711563_yf9931aoza.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1711563_yf9931aoza.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1711563_yf9931aoza.svg#iconfont') format('svg');
 }
 .iconfont{
     font-family:"iconfont" !important;
@@ -42,6 +42,4 @@
   width: 100vw;
   height: 100vh;
 }
-
-
 </style>
