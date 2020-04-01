@@ -2,45 +2,88 @@
   <div class="discoverMusic">
     <el-tabs v-model="activeName" class="tab">
       <el-tab-pane label="个性推荐" name="first">
-        <el-carousel :interval="4000" type="card" height="200px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            {{item}}
-          </el-carousel-item>
+        <el-carousel :interval="4000" type="card" height="150px">
+          <el-carousel-item v-for="item in 6" :key="item">{{item}}</el-carousel-item>
         </el-carousel>
+
+        <div class="recommend-songList">
+          <headNav title="推荐歌单"></headNav>
+          <div class="song-list">
+            <songList></songList>
+            <songList></songList>
+            <songList></songList>
+            <songList></songList>
+            <songList></songList>
+            <songList></songList>
+            <songList></songList>
+            <songList></songList>
+          </div>
+        </div>
+
+        <div class="latest-music">
+          <headNav title="latest-music" @click="change()"></headNav>
+          <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
+        </div>
+
+        <div class="recommend-MV">
+          <headNav title="推荐MV"></headNav>
+          <div class="MV-list">
+            <MV></MV>
+            <MV></MV>
+            <MV></MV>
+            <MV></MV>
+          </div>
+        </div>
       </el-tab-pane>
-      <el-tab-pane label="歌单" name="second">歌单</el-tab-pane>
-      <el-tab-pane label="排行榜" name="third">排行榜</el-tab-pane>
-      <el-tab-pane label="歌手" name="fourth">歌手</el-tab-pane>
-      <el-tab-pane label="最新音乐" name="newmusic">最新音乐</el-tab-pane>
+      <el-tab-pane label="歌单" name="second" class="songL">
+        <songList></songList>
+        <songList></songList>
+        <songList></songList>
+        <songList></songList>
+        <songList></songList>
+        <songList></songList>
+        <songList></songList>
+        <songList></songList>
+      </el-tab-pane>
+      <el-tab-pane label="排行榜" name="third">
+         <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
+      </el-tab-pane>
+      <el-tab-pane label="最新音乐" name="latestMusic">
+         <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
+import songList from "../../components/songList";
+import headNav from "./components/headNav";
+import song from "../../components/song";
+import MV from "../../components/MV";
+
 export default {
+  components: {
+    songList,
+    headNav,
+    song,
+    MV
+  },
   data() {
     return {
       activeName: "first"
     };
   },
   methods: {
-    /* handleClick(tab, event) {
-        console.log(tab, event);
-      }*/
   }
 };
 </script>
 
 <style lang="scss" >
 .discoverMusic {
-  position: absolute;
+  position: relative;
   left: 120px;
-  .tab {
-    width: calc(100vw - 120px);
-    min-height: 100vh;
-  }
+  width: calc(100vw - 120px);
   .el-tabs__header {
-    width: 100%;
     .el-tabs__nav-scroll {
       display: flex;
       flex-direction: row;
@@ -60,7 +103,7 @@ export default {
 }
 .el-tabs__content {
   width: 80%;
-  margin: auto;
+  margin: 0 auto;
   .el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
@@ -77,7 +120,37 @@ export default {
     background-color: #d3dce6;
   }
 }
-.el-carousel__container{
-  height: 150px!important;
+</style>
+<style lang="scss" scoped>
+.recommend-songList {
+  .song-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    column-gap: 20px;
+    row-gap: 30px;
+    justify-content: center;
+    align-content: center;
+  }
+}
+.latest-music {
+}
+.recommend-MV {
+  .MV-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 250px);
+    column-gap: 20px;
+    row-gap: 30px;
+    justify-content: center;
+    align-content: center;
+  }
+}
+.songL{
+      display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+    column-gap: 20px;
+    row-gap: 30px;
+    justify-content: center;
+    align-content: center;
+  
 }
 </style>

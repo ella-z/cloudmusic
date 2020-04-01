@@ -40,6 +40,6 @@
   text-align: center;
   color: #2c3e50;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }
 </style>

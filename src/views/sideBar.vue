@@ -53,11 +53,12 @@ export default {
 <style lang="scss" scoped>
 .sideBar {
   width: 120px;
-  height: 100%;
+  height: calc(100vh - 75px);
   background-color: #f6f6f8;
   border-right: 1px solid #e1e1e2;
   padding: 10px 0;
   position: fixed;
+  z-index:999;
   .sideBar-list {
     li {
       cursor: pointer;

@@ -50,6 +50,7 @@ export default {
     position: fixed;
     bottom: 0;
     border-top: 1px solid #E1E1E2;
+    z-index:999;
     display: flex;
     flex-direction: row;
     align-items: center;
