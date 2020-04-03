@@ -42,4 +42,22 @@
   width: 100vw;
   min-height: 100vh;
 }
+
+
+    .el-tabs__nav-scroll {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      .el-tabs__item.is-active {
+        color: #c62f2f;
+      }
+      .el-tabs__item:hover {
+        color: #c62f2f;
+      }
+      .el-tabs__active-bar {
+        background-color: #c62f2f;
+      }
+    }
+
 </style>

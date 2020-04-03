@@ -15,8 +15,13 @@
         </li>
       </ul>
     </div>
-    <div id="audio">
-      <audio src="../assets/demo.mp3">您的浏览器不支持 audio 元素。</audio>
+    <div class="audio-box">
+      <audio src="../assets/demo.mp3" id="audio">您的浏览器不支持 audio 元素。</audio>
+      <div class="audio-display">
+          <span class="current-time">00:00</span>
+          <el-slider  :show-tooltip="false" v-model="value" class="progress"></el-slider>
+          <span class="total-time">{{totalTime}}</span>
+      </div>
     </div>
     <div class="like-button">
         <i class="iconfont">&#xe64d;</i>
@@ -31,16 +36,50 @@
 export default {
     data(){
       return{
-        musicState:false
+        musicState:false,//音乐播放的状态
+        value:0,
+        audio:'', //音频
+        totalTime:'00:00'//音频总时长
+      }
+    },
+    mounted(){
+      this.audio = document.getElementById('audio');
+    },
+    watch:{
+      totalTime(val){
+        console.log(val);
       }
     },
     methods:{
       changeMusicState(){
         this.musicState = !this.musicState;
+        if(this.musicState){
+          this.audio.play();
+          let min = parseInt(this.audio.duration / 60);
+          let ss = parseInt(this.audio.duration % 60);
+          if(min<10){
+            min = '0'+min;
+          }
+          if(ss<10){
+            ss = '0'+ss;
+          }
+          this.totalTime = min+":" + ss;
+        }else{
+          this.audio.pause();
+        }
       }
     }
 }
 </script>
+
+<style lang="scss">
+.el-slider__button{
+  border-color: #E83C3C!important;
+}
+.el-slider__bar{
+  background-color: #E83C3C!important;
+}
+</style>
 
 <style lang="scss" scoped>
 .audioPlayer{
@@ -50,7 +89,7 @@ export default {
     position: fixed;
     bottom: 0;
     border-top: 1px solid #E1E1E2;
-    z-index:999;
+    z-index:99999999;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -60,10 +99,19 @@ export default {
         width: 30px;
         height: 30px;
     }
-    #audio{
+    .audio-box{
         width: 60%;
         height: 20px;
-        background-color: pink;
+        .audio-display{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          height: 100%;
+          .progress{
+            width: 500px;
+          }
+        }
     }
     .music-button{
         ul{

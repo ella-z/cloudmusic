@@ -9,7 +9,7 @@
     </header>
    <main>
              <sideBar></sideBar>
-             <router-view></router-view>
+             <router-view class="rv"></router-view>
     </main>
     <audioPlayer></audioPlayer>
   </div>
@@ -69,6 +69,11 @@ main {
   width: 100vw;
   position: relative;
   top: 35px;
-  padding-bottom: 50px;
+  padding-bottom: 50px; 
+  .rv{
+      position: relative;
+      left: 120px;
+      width: calc(100vw - 120px);
+  }
 }
 </style>

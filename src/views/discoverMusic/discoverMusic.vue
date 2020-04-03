@@ -21,7 +21,7 @@
         </div>
 
         <div class="latest-music">
-          <headNav title="latest-music" @click="change()"></headNav>
+          <headNav title="最新音乐" ></headNav>
           <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
         </div>
 
@@ -57,7 +57,7 @@
 
 <script>
 import songList from "../../components/songList";
-import headNav from "./components/headNav";
+import headNav from "../../components/headNav";
 import song from "../../components/song";
 import MV from "../../components/MV";
 
@@ -79,28 +79,6 @@ export default {
 </script>
 
 <style lang="scss" >
-.discoverMusic {
-  position: relative;
-  left: 120px;
-  width: calc(100vw - 120px);
-  .el-tabs__header {
-    .el-tabs__nav-scroll {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      .el-tabs__item.is-active {
-        color: #c62f2f;
-      }
-      .el-tabs__item:hover {
-        color: #c62f2f;
-      }
-      .el-tabs__active-bar {
-        background-color: #c62f2f;
-      }
-    }
-  }
-}
 .el-tabs__content {
   width: 80%;
   margin: 0 auto;
@@ -123,6 +101,7 @@ export default {
 </style>
 <style lang="scss" scoped>
 .recommend-songList {
+  margin-top: 20px;
   .song-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, 150px);
@@ -133,8 +112,10 @@ export default {
   }
 }
 .latest-music {
+  margin-top: 20px;
 }
 .recommend-MV {
+  margin-top: 20px;
   .MV-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, 250px);
