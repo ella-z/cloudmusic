@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
   .MV-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 250px);
+    grid-template-columns: repeat(auto-fill, 200px);
     column-gap: 20px;
     row-gap: 30px;
     justify-content: center;

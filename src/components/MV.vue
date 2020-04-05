@@ -12,8 +12,8 @@ export default {};
 
 <style lang="scss" scoped>
 .MV {
-  width: 250px;
-  height: 200px;
+  width: 200px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;

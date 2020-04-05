@@ -7,28 +7,47 @@
       </div>
       <div class="nav-right"></div>
     </header>
-   <main>
-             <sideBar></sideBar>
-             <router-view class="rv"></router-view>
+    <main>
+      <sideBar></sideBar>
+      <router-view class="rv"></router-view>
     </main>
     <audioPlayer></audioPlayer>
+    <playList v-show="playListShow" class="playList"></playList>
+    <songDetailsPage v-show="pageShow" class="songDetailsPage"></songDetailsPage>
   </div>
 </template>
 
 <script>
-import audioPlayer from "./audioPlayer";
+import audioPlayer from "./audioPlayer/audioPlayer";
 import sideBar from "./sideBar";
+import songDetailsPage from "./songDetailsPage/songDetailsPage";
+import playList from "./audioPlayer/components/playList";
 
 export default {
   components: {
     audioPlayer,
-    sideBar
+    sideBar,
+    songDetailsPage,
+    playList
   },
   data() {
-    return {};
+    return {
+      
+    };
+  },
+  computed:{
+    pageShow(){
+      return this.$store.state.songPageShow;
+    },
+    playListShow(){
+      return this.$store.state.playListShow;
+    }
   },
   mounted() {
     this.$router.push("/discoverMusic");
+  },
+  methods:{
+
   }
 };
 </script>
@@ -69,11 +88,11 @@ main {
   width: 100vw;
   position: relative;
   top: 35px;
-  padding-bottom: 50px; 
-  .rv{
-      position: relative;
-      left: 120px;
-      width: calc(100vw - 120px);
+  padding-bottom: 50px;
+  .rv {
+    position: relative;
+    left: 120px;
+    width: calc(100vw - 120px);
   }
 }
 </style>

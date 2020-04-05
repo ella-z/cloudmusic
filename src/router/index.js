@@ -5,6 +5,8 @@ import search from "../views/search/search";
 import myMusic from "../views/myMusic/myMusic";
 import discoverMusic from "../views/discoverMusic/discoverMusic";
 import video from "../views/video/video";
+import login from "../views/myMusic/login";
+import myPage from "../views/myMusic/myPage";
 
 
 Vue.use(VueRouter);
@@ -23,7 +25,19 @@ const routes = [
       {
         path: "/myMusic",
         name: "myMusic",
-        component: myMusic
+        component: myMusic,
+        children:[
+          {
+            path:"/myMusic/login",
+            name:"login",
+            component:login
+          },
+          {
+            path:"/myMusic/myPage",
+            name:"myPage",
+            component:myPage
+          }
+        ]
       },
       {
         path: "/discoverMusic",
