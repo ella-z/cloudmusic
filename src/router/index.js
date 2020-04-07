@@ -7,6 +7,7 @@ import discoverMusic from "../views/discoverMusic/discoverMusic";
 import video from "../views/video/video";
 import login from "../views/myMusic/login";
 import myPage from "../views/myMusic/myPage";
+import videoDetailsPage from "../views/video/videoDetailsPage"
 
 
 Vue.use(VueRouter);
@@ -50,6 +51,11 @@ const routes = [
         component: video
       },
     ]
+  },
+  {
+    path:"/videoDetailsPage",
+    name:"videoDetailsPage",
+    component:videoDetailsPage
   }
 ];
 

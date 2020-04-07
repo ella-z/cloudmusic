@@ -3,21 +3,22 @@
     <img src="../../assets/demo.png" class="music-img" @click="toSongDetailsPage" />
     <div class="music-button">
       <ul>
-        <li>
+        <li @click="switchSong('previous')">
           <i class="iconfont icon">&#xe603;</i>
         </li>
         <li class="play-button" @click="changeMusicState">
           <i class="iconfont icon" v-show="!musicState">&#xe63d;</i>
           <i class="iconfont icon" v-show="musicState">&#xe61d;</i>
         </li>
-        <li>
+        <li @click="switchSong('next')">
           <i class="iconfont icon">&#xe602;</i>
         </li>
       </ul>
     </div>
     <div class="audio-box">
       <audio
-        src="../../assets/demo.mp3"
+        :autoplay="audioAutoplay"
+        :src="'https://music.163.com/song/media/outer/url?id='+audioList[audioIndex].id+'.mp3'"
         ref="audio"
         @loadedmetadata="getAudioLength()"
         @timeupdate="audioTimeUpdate()"
@@ -57,7 +58,17 @@ export default {
       currentTime: 0, //当前播放时间
       lastTime: null, //标记时间戳
       totalTime: "00:00", //音频总时长
-      presentTime: "00:00"
+      presentTime: "00:00",
+      audioIndex: 0,
+      audioAutoplay:false, //在切换歌曲时，可自动播放音乐
+      audioList: [
+        {
+          id:"1403250178",
+        },
+        {
+          id:"16431978"
+        }
+      ]
     };
   },
   mounted() {},
@@ -125,7 +136,20 @@ export default {
       this.$store.commit("changeSongPageState", true);
     },
     toPlayList(val) {
+      //是否展示歌曲列表
       this.$store.commit("changePlayListState", val);
+    },
+    switchSong(val) {
+      //切换歌曲
+      if (val === "next" && this.audioIndex < this.audioList.length - 1) {
+        this.audioIndex++;
+      } else if (val === "previous" && this.audioIndex > 0) {
+        this.audioIndex--;
+      } else if(this.audioIndex === this.audioList.length - 1){
+        this.audioIndex = 0;
+      }
+       this.musicState = true;
+       this.audioAutoplay = true;
     }
   }
 };
