@@ -3,25 +3,26 @@
     <el-tabs v-model="activeName" class="tab">
       <el-tab-pane label="个性推荐" name="first">
         <el-carousel :interval="4000" type="card" height="150px">
-          <el-carousel-item v-for="item in 6" :key="item">{{item}}</el-carousel-item>
+          <el-carousel-item v-for="(item,index) in bannerImgArr" :key="index">
+            <img :src="item.pic" alt />
+          </el-carousel-item>
         </el-carousel>
 
         <div class="recommend-songList">
           <headNav title="推荐歌单"></headNav>
           <div class="song-list">
-            <songList></songList>
-            <songList></songList>
-            <songList></songList>
-            <songList></songList>
-            <songList></songList>
-            <songList></songList>
-            <songList></songList>
-            <songList></songList>
+            <songList
+              :key="index"
+              v-for="(item,index) in recommendPlaylist"
+              :playlistName="item.name"
+              :playlistImg="item.picUrl"
+              :playlistID="item.id"
+            ></songList>
           </div>
         </div>
 
         <div class="latest-music">
-          <headNav title="最新音乐" ></headNav>
+          <headNav title="最新音乐"></headNav>
           <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
         </div>
 
@@ -36,20 +37,13 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="歌单" name="second" class="songL">
-        <songList></songList>
-        <songList></songList>
-        <songList></songList>
-        <songList></songList>
-        <songList></songList>
-        <songList></songList>
-        <songList></songList>
-        <songList></songList>
+        <songList :key="index" v-for="(item,index) in 15"></songList>
       </el-tab-pane>
       <el-tab-pane label="排行榜" name="third">
-         <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
+        <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
       </el-tab-pane>
       <el-tab-pane label="最新音乐" name="latestMusic">
-         <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
+        <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -70,11 +64,25 @@ export default {
   },
   data() {
     return {
-      activeName: "first"
+      activeName: "first",
+      recommendPlaylist: "",
+      bannerImgArr:''
     };
   },
-  methods: {
-  }
+  mounted() {
+    let that = this;
+    this.$axios
+      .get("http://localhost:3000/personalized?limit=10")
+      .then(function(response) {
+        that.recommendPlaylist = response.data.result;
+      });
+    this.$axios
+      .get("http://localhost:3000/banner?type=3")
+      .then(function(response) {
+        that.bannerImgArr = response.data.banners;
+      });
+  },
+  methods: {}
 };
 </script>
 
@@ -100,38 +108,43 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-.recommend-songList {
-  margin-top: 20px;
-  .song-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 150px);
-    column-gap: 20px;
-    row-gap: 30px;
-    justify-content: center;
-    align-content: center;
+.discoverMusic {
+  img {
+    width: 100%;
+    height: 100%;
   }
-}
-.latest-music {
-  margin-top: 20px;
-}
-.recommend-MV {
-  margin-top: 20px;
-  .MV-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 200px);
-    column-gap: 20px;
-    row-gap: 30px;
-    justify-content: center;
-    align-content: center;
-  }
-}
-.songL{
+  .recommend-songList {
+    margin-top: 20px;
+    .song-list {
       display: grid;
+      grid-template-columns: repeat(auto-fill, 150px);
+      column-gap: 20px;
+      row-gap: 30px;
+      justify-content: center;
+      align-content: center;
+    }
+  }
+  .latest-music {
+    margin-top: 20px;
+  }
+  .recommend-MV {
+    margin-top: 20px;
+    .MV-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      column-gap: 20px;
+      row-gap: 30px;
+      justify-content: center;
+      align-content: center;
+    }
+  }
+  .songL {
+    display: grid;
     grid-template-columns: repeat(auto-fill, 150px);
     column-gap: 20px;
     row-gap: 30px;
     justify-content: center;
     align-content: center;
-  
+  }
 }
 </style>

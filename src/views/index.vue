@@ -88,10 +88,11 @@ main {
   width: 100vw;
   position: relative;
   top: 35px;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
   .rv {
     position: relative;
     left: 120px;
+    top:35px;
     width: calc(100vw - 120px);
   }
 }

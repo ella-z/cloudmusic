@@ -31,6 +31,7 @@ export default {
   width: 100%;
   height: 100vh;
   padding: 10% 0;
+  text-align: center;
   .title {
     font-size: 50px;
     font-weight: 700;
