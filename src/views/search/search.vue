@@ -53,7 +53,6 @@ export default {};
     background-color: #fff;
     border: 1px solid #aeb6be;
     border-radius: 20px;
-    font-size: 16px;
   }
 }
 .top-search{

@@ -2,62 +2,59 @@
   <div class="discoverMusic">
     <el-tabs v-model="activeName" class="tab">
       <el-tab-pane label="个性推荐" name="first">
-        <el-carousel :interval="4000" type="card" height="150px">
+        <el-carousel :interval="4000" type="card" height="200px">
           <el-carousel-item v-for="(item,index) in bannerImgArr" :key="index">
             <img :src="item.pic" alt />
           </el-carousel-item>
         </el-carousel>
 
-        <div class="recommend-songList">
+        <div class="recommend-playlist">
           <headNav title="推荐歌单"></headNav>
           <div class="song-list">
-            <songList
+            <playlist
               :key="index"
-              v-for="(item,index) in recommendPlaylist"
-              :playlistName="item.name"
-              :playlistImg="item.picUrl"
-              :playlistID="item.id"
-            ></songList>
+              v-for="(item,index) in recommendPlaylists"
+              :recommendPlaylist="recommendPlaylists[index]"
+            ></playlist>
           </div>
         </div>
 
         <div class="latest-music">
           <headNav title="最新音乐"></headNav>
-          <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
+          <song
+            v-for="(item,index) in latestMusic"
+            :key="index"
+            :number="index+1"
+            :songIndex = index
+            :songs="latestMusic[index]"
+            :playlist = "latestMusic"
+          ></song>
         </div>
 
         <div class="recommend-MV">
           <headNav title="推荐MV"></headNav>
           <div class="MV-list">
-            <MV></MV>
-            <MV></MV>
-            <MV></MV>
-            <MV></MV>
+            <MV :key="index" v-for="(item,index) in recommendMV" :MVDetail="recommendMV[index]"></MV>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="歌单" name="second" class="songL">
-        <songList :key="index" v-for="(item,index) in 15"></songList>
-      </el-tab-pane>
-      <el-tab-pane label="排行榜" name="third">
-        <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
-      </el-tab-pane>
-      <el-tab-pane label="最新音乐" name="latestMusic">
-        <song v-for="(item,index) in 10" :key="index" :number="index+1"></song>
-      </el-tab-pane>
+      <el-tab-pane label="歌单" name="second" class="songL"></el-tab-pane>
+      <el-tab-pane label="排行榜" name="third"></el-tab-pane>
+      <el-tab-pane label="最新音乐" name="latestMusic"></el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import songList from "../../components/songList";
+import playlist from "../../components/playlist";
 import headNav from "../../components/headNav";
 import song from "../../components/song";
 import MV from "../../components/MV";
+import { getRecommend } from "../../api/getRecommend";
 
 export default {
   components: {
-    songList,
+    playlist,
     headNav,
     song,
     MV
@@ -65,24 +62,39 @@ export default {
   data() {
     return {
       activeName: "first",
-      recommendPlaylist: "",
-      bannerImgArr:''
+      recommendPlaylists: [], //推荐的歌单
+      bannerImgArr: [], //轮播图
+      recommendMV: [], //推荐MV
+      latestMusic: [] //最新的音乐
     };
   },
   mounted() {
-    let that = this;
-    this.$axios
-      .get("http://localhost:3000/personalized?limit=10")
-      .then(function(response) {
-        that.recommendPlaylist = response.data.result;
-      });
-    this.$axios
-      .get("http://localhost:3000/banner?type=3")
-      .then(function(response) {
-        that.bannerImgArr = response.data.banners;
-      });
+    this.getData();
   },
-  methods: {}
+  methods: {
+    async getData() {
+      const recommendMV = await getRecommend(
+        "http://localhost:3000/personalized/mv"
+      );
+      const recommendPlaylists = await getRecommend(
+        "http://localhost:3000/personalized?limit=10"
+      );
+      const bannerImgArr = await getRecommend(
+        "http://localhost:3000/banner?type=3"
+      );
+      const latestMusic = await getRecommend(
+        "http://localhost:3000/personalized/newsong"
+      );
+      try {
+        this.recommendMV = recommendMV.result;
+        this.recommendPlaylists = recommendPlaylists.result;
+        this.bannerImgArr = bannerImgArr.banners;
+        this.latestMusic = latestMusic.result;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 };
 </script>
 
@@ -113,11 +125,11 @@ export default {
     width: 100%;
     height: 100%;
   }
-  .recommend-songList {
+  .recommend-playlist {
     margin-top: 20px;
     .song-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, 150px);
+      grid-template-columns: repeat(auto-fill, 180px);
       column-gap: 20px;
       row-gap: 30px;
       justify-content: center;
@@ -131,7 +143,7 @@ export default {
     margin-top: 20px;
     .MV-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, 200px);
+      grid-template-columns: repeat(auto-fill, 230px);
       column-gap: 20px;
       row-gap: 30px;
       justify-content: center;

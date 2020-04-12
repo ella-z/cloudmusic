@@ -6,7 +6,7 @@ import axios from 'axios'
 import './plugins/element.js'
 
 
-Vue.prototype.$axios = axios
+Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
 
 new Vue({

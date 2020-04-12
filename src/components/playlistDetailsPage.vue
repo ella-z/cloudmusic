@@ -32,14 +32,25 @@
     <div class="playlist-details">
       <el-tabs v-model="activeName" class="tab">
         <el-tab-pane label="歌曲列表" name="playlist"></el-tab-pane>
-        <el-tab-pane label="评论" name="comment"></el-tab-pane>
+        <el-tab-pane :label="'评论('+commentCount+')'" name="comment">
+          <div class="comment-nav">精彩评论</div>
+          <comment v-for="(item,index) in hotComments" :key="index" :comment="hotComments[index]"></comment>
+          <div class="comment-nav">最新评论({{commentCount}})</div>
+          <comment v-for="(item,index) in comments" :key="'info'+index" :comment="comments[index]"></comment>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
 </template>
 
 <script>
+import { getPlaylist, getPlaylistComment } from "../api/playlistDetails";
+import comment from "../components/comments";
+
 export default {
+  components: {
+    comment
+  },
   data() {
     return {
       activeName: "playlist",
@@ -50,28 +61,48 @@ export default {
       createTime: "", //歌单的创作时间
       nickname: "", //歌单创作者的名称
       tags: [], //歌单的标签
-      description: "",
+      description: "", //歌单的简介
+      commentCount: 0, //评论总数
       playlistID: this.$route.query.playlistID, //歌单的ID
-      playlistImg: this.$route.query.playlistImg //歌单封面
+      playlistImg: this.$route.query.playlistImg, //歌单封面
+      hotComments: [],
+      comments: []
     };
   },
   computed: {},
   mounted() {
-    let that = this;
-    this.$axios
-      .get("http://localhost:3000/playlist/detail?id=" + this.playlistID)
-      .then(function(response) {
-        console.log(response);
-        const playlist = response.data.playlist;
-        that.playlistName = playlist.name;
-        that.trackCount = playlist.trackCount;
-        that.playCount = playlist.playCount;
-        that.creatorImg = playlist.creator.avatarUrl;
-        that.nickname = playlist.creator.nickname;
-        that.tags = playlist.tags;
-        that.description = playlist.description;
-        let time = new Date(playlist.createTime);
-        that.createTime =
+    this.getPlaylistData();
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1);
+    },
+    async getPlaylistData() {
+      const playlist = await getPlaylist(
+        "http://localhost:3000/playlist/detail",
+        this.playlistID
+      );
+      try {
+        let {
+          name,
+          trackCount,
+          playCount,
+          tags,
+          description,
+          commentCount,
+          createTime
+        } = playlist;
+        let { avatarUrl, nickname } = playlist.creator;
+        this.playlistName = name;
+        this.trackCount = trackCount;
+        this.playCount = playCount;
+        this.creatorImg = avatarUrl;
+        this.nickname = nickname;
+        this.tags = tags;
+        this.description = description;
+        this.commentCount = commentCount;
+        let time = new Date(createTime);
+        this.createTime =
           time.getFullYear() +
           "-" +
           (time.getMonth() < 10
@@ -79,11 +110,22 @@ export default {
             : time.getMonth() + 1) +
           "-" +
           (time.getDate() < 10 ? "0" + time.getDate() : time.getDate());
-      });
-  },
-  methods: {
-    goback() {
-      this.$router.go(-1);
+      } catch (error) {
+        console.log(error);
+      }
+      
+      let commentData = await getPlaylistComment(
+        "http://localhost:3000/comment/playlist",
+        this.playlistID,
+        playlist.commentCount
+      );
+      try {
+        let { hotComments, comments } = commentData;
+        this.hotComments = hotComments;
+        this.comments = comments;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };
@@ -170,6 +212,11 @@ export default {
   }
   .playlist-details {
     margin-top: 3%;
+    .comment-nav {
+      height: 30px;
+      border-bottom: 1px solid #e1e1e2;
+      margin-top: 3%;
+    }
   }
 }
 </style>

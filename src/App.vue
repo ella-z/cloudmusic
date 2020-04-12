@@ -8,12 +8,12 @@
 <style lang="scss">
 @font-face {
   font-family: 'iconfont';  /* project id 1711563 */
-  src: url('//at.alicdn.com/t/font_1711563_olvalcyoqhj.eot');
-  src: url('//at.alicdn.com/t/font_1711563_olvalcyoqhj.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1711563_olvalcyoqhj.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1711563_olvalcyoqhj.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1711563_olvalcyoqhj.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1711563_olvalcyoqhj.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1711563_zml9qjypt9r.eot');
+  src: url('//at.alicdn.com/t/font_1711563_zml9qjypt9r.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1711563_zml9qjypt9r.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1711563_zml9qjypt9r.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1711563_zml9qjypt9r.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1711563_zml9qjypt9r.svg#iconfont') format('svg');
 }
 .iconfont {
   font-family: "iconfont" !important;
@@ -27,7 +27,6 @@
 * {
   padding: 0;
   margin: 0;
-  font-size: 12px;
   box-sizing: border-box;
   font-family: "Times New Roman", Georgia, Serif;
   list-style: none;

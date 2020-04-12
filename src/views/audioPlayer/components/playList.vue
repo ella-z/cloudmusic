@@ -6,20 +6,17 @@
         <i class="iconfont icon" @click="toClose()">&#xe607;</i>
       </nav>
       <div>
-        <song></song>
-        <song></song>
-        <song></song>
-        <song></song>
+
       </div>
     </div>
   </transition>
 </template>
 
 <script>
-import song from "../../../components/song";
+//import song from "../../../components/song";
 export default {
   components:{
-    song
+    //song
   },
   methods: {
     toClose() {
@@ -48,7 +45,6 @@ export default {
       padding: 10px;
       border-bottom: 1px solid #e1e1e2;
       span{
-          font-size: 16px;
           font-weight: 700;
       }
     .icon {

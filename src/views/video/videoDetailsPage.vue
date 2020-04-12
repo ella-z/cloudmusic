@@ -31,6 +31,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   margin-top: 2%;
+  text-align: center;
   .icon {
     width: 25px;
     height: 25px;

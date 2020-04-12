@@ -1,16 +1,27 @@
 <template>
   <div class="MV" @click="toVideoPage">
-    <div class="vedio"></div>
-    <span class="vedio-name">xxxxx</span>
-    <span class="singer">yyy</span>
+    <playCountTag :RePlayCount="MVDetail.playCount" icon="&#xe755;"></playCountTag>
+    <img :src="MVDetail.picUrl" alt class="vedio" />
+    <span class="vedio-name">{{MVDetail.name}}</span>
+    <span class="artistName">{{MVDetail.artistName}}</span>
   </div>
 </template>
 
 <script>
+import playCountTag from "../components/playCountTag";
+
 export default {
-  methods:{
-    toVideoPage(){
-      this.$router.push('/videoDetailsPage');
+  props: ["MVDetail"],
+  components: {
+    playCountTag
+  },
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {
+    toVideoPage() {
+      this.$router.push("/videoDetailsPage");
     }
   }
 };
@@ -18,20 +29,28 @@ export default {
 
 <style lang="scss" scoped>
 .MV {
-  width: 200px;
-  height: 150px;
+  position: relative;
+  width: 230px;
+  height: 220px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: start;
   cursor: pointer;
+
   .vedio {
     width: 100%;
-    height: 80%;
+    height: 60%;
     background-color: pink;
   }
   .vedio-name {
-    font-size: 20px;
+    font-size: 18px;
+    height: 20%;
+    overflow: hidden;
+  }
+  .artistName {
+    margin-top: 5px;
+    color: #999;
   }
 }
 </style>

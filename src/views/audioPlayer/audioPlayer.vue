@@ -1,6 +1,6 @@
 <template>
-  <div class="audioPlayer">
-    <img src="../../assets/demo.png" class="music-img" @click="toSongDetailsPage" />
+  <div class="audioPlayer" v-if="isIf">
+    <img :src="audioList[audioIndex].picUrl" class="music-img" @click="toSongDetailsPage" />
     <div class="music-button">
       <ul>
         <li @click="switchSong('previous')">
@@ -20,19 +20,38 @@
         :autoplay="audioAutoplay"
         :src="'https://music.163.com/song/media/outer/url?id='+audioList[audioIndex].id+'.mp3'"
         ref="audio"
+        @ended="audioEnd()"
         @loadedmetadata="getAudioLength()"
         @timeupdate="audioTimeUpdate()"
       >您的浏览器不支持 audio 元素。</audio>
       <div class="audio-display">
-        <span class="current-time">{{presentTime}}</span>
-        <el-slider
-          :show-tooltip="false"
-          v-model="currentTime"
-          class="progress"
-          :max="audioLength"
-          @change="changeAudioTime"
-        ></el-slider>
-        <span class="total-time">{{totalTime}}</span>
+        <div class="audio-display-top">
+          <div class="audio-display-title">
+            {{audioList[audioIndex].name}} —
+            <span
+              :key="index"
+              v-for="(item,index) in audioList[audioIndex].song.artists"
+            >
+              {{item.name}}
+              <i
+                v-if="audioList[audioIndex].song.artists.length>1&&index!==(audioList[audioIndex].song.artists.length-1)"
+              >/</i>
+            </span>
+          </div>
+          <div>
+            <span class="current-time">{{presentTime}}</span>/
+            <span class="total-time">{{totalTime}}</span>
+          </div>
+        </div>
+        <div class="audio-display-bottom">
+          <el-slider
+            :show-tooltip="false"
+            v-model="currentTime"
+            class="progress"
+            :max="audioLength"
+            @change="changeAudioTime"
+          ></el-slider>
+        </div>
       </div>
     </div>
     <div class="like-button">
@@ -51,6 +70,7 @@
 export default {
   data() {
     return {
+      isIf: false,
       musicState: false, //音乐播放的状态
       value: 0,
       audio: "", //音频
@@ -60,18 +80,10 @@ export default {
       totalTime: "00:00", //音频总时长
       presentTime: "00:00",
       audioIndex: 0,
-      audioAutoplay:false, //在切换歌曲时，可自动播放音乐
-      audioList: [
-        {
-          id:"1403250178",
-        },
-        {
-          id:"16431978"
-        }
-      ]
+      audioAutoplay: false, //在切换歌曲时，可自动播放音乐
+      audioList: []
     };
   },
-  mounted() {},
   watch: {
     currentTime(val) {
       let min = parseInt(val / 60);
@@ -83,6 +95,13 @@ export default {
         ss = "0" + ss;
       }
       this.presentTime = min + ":" + ss;
+    },
+    "$store.state.playlist": function(val) {
+      this.audioList = val;
+      this.isIf = true;
+    },
+    "$store.state.playlistIndex": function(val) {
+      this.audioIndex = val;
     }
   },
   computed: {
@@ -90,9 +109,17 @@ export default {
       return this.$store.state.playListShow;
     }
   },
+  mounted() {
+    if (this.$store.state.playlist.length === 0) {
+      this.isIf = false;
+    } else {
+      this.isIf = true;
+    }
+  },
   methods: {
     changeMusicState() {
       //改变音频状态，暂停或者播放
+      console.log(this.audioList);
       this.musicState = !this.musicState;
       if (this.musicState) {
         this.$refs.audio.play();
@@ -145,11 +172,23 @@ export default {
         this.audioIndex++;
       } else if (val === "previous" && this.audioIndex > 0) {
         this.audioIndex--;
-      } else if(this.audioIndex === this.audioList.length - 1){
+      } else if (this.audioIndex === this.audioList.length - 1) {
         this.audioIndex = 0;
       }
-       this.musicState = true;
-       this.audioAutoplay = true;
+      this.musicState = true;
+      this.audioAutoplay = true;
+    },
+    audioEnd() {
+      //当音乐播放结束后
+      if (this.audioIndex < this.audioList.length - 1) {
+        this.audioIndex++;
+      } else if (this.audioIndex > 0) {
+        this.audioIndex--;
+      } else if (this.audioIndex === this.audioList.length - 1) {
+        this.audioIndex = 0;
+      }
+      this.audioAutoplay = true;
+      this.lastTime = null;
     }
   }
 };
@@ -157,6 +196,9 @@ export default {
 
 <style lang="scss">
 .el-slider__button {
+  width: 12px;
+  height: 12px;
+  border: none;
   border-color: #e83c3c !important;
 }
 .el-slider__bar {
