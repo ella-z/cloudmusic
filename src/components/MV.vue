@@ -37,7 +37,6 @@ export default {
   justify-content: start;
   align-items: start;
   cursor: pointer;
-
   .vedio {
     width: 100%;
     height: 60%;
@@ -47,6 +46,7 @@ export default {
     font-size: 18px;
     height: 20%;
     overflow: hidden;
+    margin-top: 5px;
   }
   .artistName {
     margin-top: 5px;

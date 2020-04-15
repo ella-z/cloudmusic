@@ -1,5 +1,5 @@
 <template>
-  <div class="playlistDetailsPage">
+  <div class="playlistDetailsPage" v-loading="loading">
     <i class="iconfont icon" @click="goback()">&#xe607;</i>
     <nav>
       <img :src="playlistImg" />
@@ -30,8 +30,16 @@
       </div>
     </nav>
     <div class="playlist-details">
-      <el-tabs v-model="activeName" class="tab">
-        <el-tab-pane label="歌曲列表" name="playlist"></el-tab-pane>
+      <el-tabs v-model="activeName" class="tab" >
+        <el-tab-pane label="歌曲列表" name="playlist" class="playlist">
+          <el-table :data="tableData" style="width: 100%" :stripe="true" @row-click ="handleClick()">
+            <el-table-column type="index" width="50"></el-table-column>
+            <el-table-column prop="name" label="音乐标题" sortable width="500"></el-table-column>
+            <el-table-column prop="artist" label="歌手" sortable width="300"></el-table-column>
+            <el-table-column prop="album" label="专辑" sortable width="300"></el-table-column>
+            <!--<el-table-column prop="duration" label="时长" sortable width="100"></el-table-column>-->
+          </el-table>
+        </el-tab-pane>
         <el-tab-pane :label="'评论('+commentCount+')'" name="comment">
           <div class="comment-nav">精彩评论</div>
           <comment v-for="(item,index) in hotComments" :key="index" :comment="hotComments[index]"></comment>
@@ -44,7 +52,9 @@
 </template>
 
 <script>
+//导入js方法的时候要用{}括起来！！！
 import { getPlaylist, getPlaylistComment } from "../api/playlistDetails";
+//import { getMusic } from "../api/getData";
 import comment from "../components/comments";
 
 export default {
@@ -66,7 +76,9 @@ export default {
       playlistID: this.$route.query.playlistID, //歌单的ID
       playlistImg: this.$route.query.playlistImg, //歌单封面
       hotComments: [],
-      comments: []
+      comments: [],
+      loading: false,
+      tableData: []
     };
   },
   computed: {},
@@ -78,6 +90,7 @@ export default {
       this.$router.go(-1);
     },
     async getPlaylistData() {
+      this.loading = true;
       const playlist = await getPlaylist(
         "http://localhost:3000/playlist/detail",
         this.playlistID
@@ -93,6 +106,25 @@ export default {
           createTime
         } = playlist;
         let { avatarUrl, nickname } = playlist.creator;
+        
+        for (let i = 0; i < playlist.tracks.length; i++) {
+          if (playlist.tracks[i].ar.length === 1) {
+            let musicList =playlist.tracks[i];
+            this.tableData.push({
+              id: musicList.id,
+              picUrl:musicList.al.picUrl,
+              name: musicList.name,
+              artist: musicList.ar[0].name,
+              song:{
+                album:{
+                  name:musicList.al.name
+                },
+                artists:musicList.ar
+              },
+              album: musicList.al.name
+            });
+          }
+        }
         this.playlistName = name;
         this.trackCount = trackCount;
         this.playCount = playCount;
@@ -110,10 +142,12 @@ export default {
             : time.getMonth() + 1) +
           "-" +
           (time.getDate() < 10 ? "0" + time.getDate() : time.getDate());
+        this.loading = false;
       } catch (error) {
+        this.loading = false;
         console.log(error);
       }
-      
+
       let commentData = await getPlaylistComment(
         "http://localhost:3000/comment/playlist",
         this.playlistID,
@@ -126,11 +160,20 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    handleClick(row){
+      console.log(row);
+      this.$store.commit("changePlaylist",this.tableData);
     }
   }
 };
 </script>
 
+<style lang="scss">
+.el-tabs__content {
+  width: 90%;
+}
+</style>
 <style lang="scss" scoped>
 .playlistDetailsPage {
   min-height: 100vh;
@@ -199,7 +242,6 @@ export default {
         width: 100%;
         height: 100%;
         text-align: left;
-        overflow: hidden;
         font-size: 14px;
         padding-right: 30px;
         overflow: scroll;
@@ -211,7 +253,6 @@ export default {
     }
   }
   .playlist-details {
-    margin-top: 3%;
     .comment-nav {
       height: 30px;
       border-bottom: 1px solid #e1e1e2;

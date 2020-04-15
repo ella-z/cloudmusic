@@ -1,0 +1,109 @@
+.songDetailsPage {
+    width: 100vw;
+    height: calc(100vh - 80px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
+    transform-origin: 0% 100%; //改变基点
+    transform: scale(1, 1);
+    transition: transform 0.5s;
+    opacity: 1;
+    background-color: #fff;
+    .song-backgroundImg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: -1;
+      filter: blur(15px);
+    }
+    .songDetails {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 3%;
+      background-color: rgba($color: #000, $alpha: 0.6);
+      color: #fff;
+      .song-LP-mask {
+        width: 430px;
+        height: 430px;
+        background-repeat: no-repeat;
+        background-position: -296px -1216px;
+        background-size: 185%;
+        background-image: url("https://s2.music.126.net/style/web2/img/coverall.png?5237dbf6076c71e0e24600ae03a32225");
+        animation: rotate 15s linear infinite;
+        .song-LP-img {
+          width: 65%;
+          height: 65%;
+          margin: 75px;
+          border-radius: 50%;
+        }
+      }
+      @keyframes rotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .song-information {
+        width: 50%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: 2fr 1fr 10fr 1fr;
+        justify-items: start;
+        align-items: center;
+        .song-name {
+          font-size: 35px;
+          font-weight: 700;
+        }
+        .song-album {
+          font-size: 20px;
+          span {
+            margin-right: 20px;
+          }
+        }
+        .song-words {
+          width: 100%;
+          height: 100%;
+          border-right: 1px solid #d3dce6;
+          font-size: 18px;
+          overflow: scroll;
+          -webkit-overflow-scrolling: touch;
+          span{
+            display: block;
+            color:#a5abb1;
+            height: 50px;
+          }
+          .words{
+            color: #fff;
+          }
+        }
+        .song-icon {
+          i {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+  .closeIcon {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    border: 1px solid #aeb6be;
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    background-color: #fff;
+  }
+  .pageTransition-enter-active {
+    opacity: 0.5;
+    transform: scale(0, 0);
+  }
+  .pageTransition-leave-active {
+    opacity: 0.5;
+    transform: scale(0, 0);
+  }

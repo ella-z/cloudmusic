@@ -10,7 +10,6 @@ import myPage from "../views/myMusic/myPage";
 import videoDetailsPage from "../views/video/videoDetailsPage";
 import playlistDetailsPage from "../components/playlistDetailsPage";
 
-
 Vue.use(VueRouter);
 
 const routes = [

@@ -8,7 +8,7 @@
       <br />
       <span class="comment-time">{{commentTime}}</span>
     </div>
-  </div>
+  </div> 
 </template>
 
 <script>

@@ -12,23 +12,23 @@
       <router-view class="rv"></router-view>
     </main>
     <audioPlayer></audioPlayer>
-    <playList v-show="playListShow" class="playList"></playList>
+    <audioPlaylist v-show="playListShow" class="playList"></audioPlaylist>
     <songDetailsPage v-show="pageShow" class="songDetailsPage"></songDetailsPage>
   </div>
 </template>
 
 <script>
-import audioPlayer from "./audioPlayer/audioPlayer";
 import sideBar from "./sideBar";
 import songDetailsPage from "./songDetailsPage/songDetailsPage";
-import playList from "./audioPlayer/components/playList";
+import audioPlaylist from "../views/audioPlayer/components/audioPlaylist";
+import audioPlayer from './audioPlayer/audioPlayer';
 
 export default {
   components: {
-    audioPlayer,
     sideBar,
     songDetailsPage,
-    playList
+    audioPlaylist,
+    audioPlayer
   },
   data() {
     return {
@@ -88,7 +88,7 @@ main {
   width: 100vw;
   position: relative;
   top: 35px;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   .rv {
     position: relative;
     left: 120px;

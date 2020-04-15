@@ -1,5 +1,5 @@
 <template>
-  <div class="discoverMusic">
+  <div class="discoverMusic" v-loading = "loading">
     <el-tabs v-model="activeName" class="tab">
       <el-tab-pane label="个性推荐" name="first">
         <el-carousel :interval="4000" type="card" height="200px">
@@ -65,7 +65,8 @@ export default {
       recommendPlaylists: [], //推荐的歌单
       bannerImgArr: [], //轮播图
       recommendMV: [], //推荐MV
-      latestMusic: [] //最新的音乐
+      latestMusic: [], //最新的音乐
+      loading:false
     };
   },
   mounted() {
@@ -73,6 +74,7 @@ export default {
   },
   methods: {
     async getData() {
+      this.loading = true;
       const recommendMV = await getRecommend(
         "http://localhost:3000/personalized/mv"
       );
@@ -90,7 +92,9 @@ export default {
         this.recommendPlaylists = recommendPlaylists.result;
         this.bannerImgArr = bannerImgArr.banners;
         this.latestMusic = latestMusic.result;
+        this.loading = false;
       } catch (err) {
+        this.loading = false;
         console.log(err);
       }
     }

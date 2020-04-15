@@ -54,14 +54,10 @@
         </div>
       </div>
     </div>
-    <div class="like-button">
-      <i class="iconfont">&#xe64d;</i>
-    </div>
-    <div class="volume-button">
-      <i class="iconfont">&#xe7b4;</i>
-    </div>
+    <i class="iconfont icon like-button">&#xe615;</i>
+    <i class="iconfont icon volume-button">&#xe7b4;</i>
     <div class="song-list" @click="toPlayList(!playListShow)">
-      <i class="iconfont">&#xe636;</i>
+      <i class="iconfont icon">&#xe636;</i>
     </div>
   </div>
 </template>
@@ -71,7 +67,6 @@ export default {
   data() {
     return {
       isIf: false,
-      musicState: false, //音乐播放的状态
       value: 0,
       audio: "", //音频
       audioLength: 0,
@@ -102,11 +97,23 @@ export default {
     },
     "$store.state.playlistIndex": function(val) {
       this.audioIndex = val;
+    },
+    musicState(val) {
+      this.$store.commit("changeMusicState", val);
     }
   },
   computed: {
     playListShow() {
       return this.$store.state.playListShow;
+    },
+    musicState:{
+      //音乐播放的状态
+      get:function(){
+         return this.$store.state.musicState;
+      },
+     set:()=>{
+
+     }
     }
   },
   mounted() {
@@ -119,8 +126,8 @@ export default {
   methods: {
     changeMusicState() {
       //改变音频状态，暂停或者播放
-      console.log(this.audioList);
       this.musicState = !this.musicState;
+      this.$store.commit("changeMusicState",!this.musicState);
       if (this.musicState) {
         this.$refs.audio.play();
       } else {
@@ -130,8 +137,8 @@ export default {
     getAudioLength() {
       //获取音视频时长
       this.audioLength = this.$refs.audio.duration;
-      let min = parseInt(this.$refs.audio.duration / 60);
-      let ss = parseInt(this.$refs.audio.duration % 60);
+      let min = parseInt(this.audioLength / 60);
+      let ss = parseInt(this.audioLength % 60);
       if (min < 10) {
         min = "0" + min;
       }
@@ -150,6 +157,7 @@ export default {
           this.currentTime = time;
         }
         this.lastTime = nowTime;
+        this.$store.commit("changeAudioCurrentTime", this.presentTime);
       }
     },
     changeAudioTime(val) {
@@ -160,6 +168,10 @@ export default {
     },
     toSongDetailsPage() {
       //展示歌曲详情页
+      this.$store.commit(
+        "changeSongInformation",
+        this.audioList[this.audioIndex]
+      );
       this.$store.commit("changeSongPageState", true);
     },
     toPlayList(val) {
@@ -175,7 +187,8 @@ export default {
       } else if (this.audioIndex === this.audioList.length - 1) {
         this.audioIndex = 0;
       }
-      this.musicState = true;
+      this.$store.commit("changeMusicState",true);
+      this.$store.commit("changeplaylistIndex",this.audioIndex);
       this.audioAutoplay = true;
     },
     audioEnd() {
@@ -187,6 +200,7 @@ export default {
       } else if (this.audioIndex === this.audioList.length - 1) {
         this.audioIndex = 0;
       }
+      this.$store.commit("changeplaylistIndex",this.audioIndex);
       this.audioAutoplay = true;
       this.lastTime = null;
     }
