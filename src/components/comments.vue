@@ -57,6 +57,7 @@ export default {
     margin-right: 2%;
   }
   .observer {
+    text-align: left;
     span {
       font-size: 20px;
     }

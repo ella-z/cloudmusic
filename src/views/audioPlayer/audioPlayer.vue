@@ -1,6 +1,6 @@
 <template>
   <div class="audioPlayer" v-if="isIf">
-    <img :src="audioList[audioIndex].picUrl" class="music-img" @click="toSongDetailsPage" />
+    <img :src="audioList[songIndex].picUrl" class="music-img" @click="toSongDetailsPage" />
     <div class="music-button">
       <ul>
         <li @click="switchSong('previous')">
@@ -14,11 +14,11 @@
           <i class="iconfont icon">&#xe602;</i>
         </li>
       </ul>
-    </div>
+    </div> 
     <div class="audio-box">
       <audio
-        :autoplay="audioAutoplay"
-        :src="'https://music.163.com/song/media/outer/url?id='+audioList[audioIndex].id+'.mp3'"
+        :autoplay="musicState"
+        :src="'https://music.163.com/song/media/outer/url?id='+audioList[songIndex].id+'.mp3'"
         ref="audio"
         @ended="audioEnd()"
         @loadedmetadata="getAudioLength()"
@@ -27,14 +27,14 @@
       <div class="audio-display">
         <div class="audio-display-top">
           <div class="audio-display-title">
-            {{audioList[audioIndex].name}} —
+            {{audioList[songIndex].name}} —
             <span
               :key="index"
-              v-for="(item,index) in audioList[audioIndex].song.artists"
+              v-for="(item,index) in audioList[songIndex].song.artists"
             >
               {{item.name}}
               <i
-                v-if="audioList[audioIndex].song.artists.length>1&&index!==(audioList[audioIndex].song.artists.length-1)"
+                v-if="audioList[songIndex].song.artists.length>1&&index!==(audioList[songIndex].song.artists.length-1)"
               >/</i>
             </span>
           </div>
@@ -74,8 +74,6 @@ export default {
       lastTime: null, //标记时间戳
       totalTime: "00:00", //音频总时长
       presentTime: "00:00",
-      audioIndex: 0,
-      audioAutoplay: false, //在切换歌曲时，可自动播放音乐
       audioList: []
     };
   },
@@ -94,12 +92,6 @@ export default {
     "$store.state.playlist": function(val) {
       this.audioList = val;
       this.isIf = true;
-    },
-    "$store.state.playlistIndex": function(val) {
-      this.audioIndex = val;
-    },
-    musicState(val) {
-      this.$store.commit("changeMusicState", val);
     }
   },
   computed: {
@@ -109,11 +101,20 @@ export default {
     musicState:{
       //音乐播放的状态
       get:function(){
-         return this.$store.state.musicState;
+        return this.$store.state.musicState;
       },
-     set:()=>{
-
+     set: function(val){
+       this.$store.commit("changeMusicState",val);
      }
+    },
+    songIndex:{
+      //当前播放的歌曲在歌单中的下标
+      get:function(){
+        return this.$store.state.songIndex;
+      },
+      set:function(val){
+        this.$store.commit("changeSongIndex",val)
+      }
     }
   },
   mounted() {
@@ -127,7 +128,6 @@ export default {
     changeMusicState() {
       //改变音频状态，暂停或者播放
       this.musicState = !this.musicState;
-      this.$store.commit("changeMusicState",!this.musicState);
       if (this.musicState) {
         this.$refs.audio.play();
       } else {
@@ -170,7 +170,7 @@ export default {
       //展示歌曲详情页
       this.$store.commit(
         "changeSongInformation",
-        this.audioList[this.audioIndex]
+        this.audioList[this.songIndex]
       );
       this.$store.commit("changeSongPageState", true);
     },
@@ -180,28 +180,26 @@ export default {
     },
     switchSong(val) {
       //切换歌曲
-      if (val === "next" && this.audioIndex < this.audioList.length - 1) {
-        this.audioIndex++;
-      } else if (val === "previous" && this.audioIndex > 0) {
-        this.audioIndex--;
-      } else if (this.audioIndex === this.audioList.length - 1) {
-        this.audioIndex = 0;
+      if (val === "next" && this.songIndex < this.audioList.length - 1) {
+        this.songIndex++;
+      } else if (val === "previous" && this.songIndex > 0) {
+        this.songIndex--;
+      } else if (this.songIndex === this.audioList.length - 1) {
+        this.songIndex = 0;
       }
-      this.$store.commit("changeMusicState",true);
-      this.$store.commit("changeplaylistIndex",this.audioIndex);
-      this.audioAutoplay = true;
+      this.musicState = true;
+      this.$store.commit("changeSongIndex",this.songIndex);
     },
     audioEnd() {
       //当音乐播放结束后
-      if (this.audioIndex < this.audioList.length - 1) {
-        this.audioIndex++;
-      } else if (this.audioIndex > 0) {
-        this.audioIndex--;
-      } else if (this.audioIndex === this.audioList.length - 1) {
-        this.audioIndex = 0;
+      if (this.songIndex < this.audioList.length - 1) {
+        this.songIndex++;
+      } else if (this.songIndex > 0) {
+        this.songIndex--;
+      } else if (this.songIndex === this.audioList.length - 1) {
+        this.songIndex = 0;
       }
-      this.$store.commit("changeplaylistIndex",this.audioIndex);
-      this.audioAutoplay = true;
+      this.$store.commit("changeSongIndex",this.songIndex);
       this.lastTime = null;
     }
   }

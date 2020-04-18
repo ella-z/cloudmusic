@@ -32,7 +32,7 @@
     <div class="playlist-details">
       <el-tabs v-model="activeName" class="tab" >
         <el-tab-pane label="歌曲列表" name="playlist" class="playlist">
-          <el-table :data="tableData" style="width: 100%" :stripe="true" @row-click ="handleClick()">
+          <el-table :data="tableData" style="width: 100%" :stripe="true" :row-class-name="tableRowClassName" @row-click="handleClick">
             <el-table-column type="index" width="50"></el-table-column>
             <el-table-column prop="name" label="音乐标题" sortable width="500"></el-table-column>
             <el-table-column prop="artist" label="歌手" sortable width="300"></el-table-column>
@@ -81,7 +81,6 @@ export default {
       tableData: []
     };
   },
-  computed: {},
   mounted() {
     this.getPlaylistData();
   },
@@ -161,8 +160,12 @@ export default {
         console.log(error);
       }
     },
+    tableRowClassName ({row, rowIndex}) {
+        //把每一行的索引放进row
+        row.index = rowIndex;
+      },
     handleClick(row){
-      console.log(row);
+      this.$store.commit("changeSongIndex",row.index);
       this.$store.commit("changePlaylist",this.tableData);
     }
   }

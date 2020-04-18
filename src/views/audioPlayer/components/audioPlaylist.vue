@@ -12,11 +12,11 @@
         </span>
         <ul class="playlist">
           <li v-for="(item,index) in playlistData" :key="index" @click="playMusic(index)">
-            <div v-show="index== playlistIndex ?true :false ">
+            <div v-show="index== songIndex ?true :false ">
               <i class="iconfont icon" v-show="!musicState">&#xe63d;</i>
               <i class="iconfont icon" v-show="musicState">&#xe61d;</i>
             </div>
-            <span v-show="index== playlistIndex ?false :true "></span>
+            <span v-show="index== songIndex ?false :true "></span>
             <span>{{playlistData[index].name}}</span>
             <span>{{playlistData[index].song.album.name}}</span>
           </li>
@@ -38,8 +38,8 @@ export default {
     musicState() {
       return this.$store.state.musicState;
     },
-    playlistIndex() {
-      return this.$store.state.playlistIndex;
+    songIndex() {
+      return this.$store.state.songIndex;
     }
   },
   methods: {
@@ -48,7 +48,7 @@ export default {
     },
     playMusic(index) {
       this.$store.commit("changeMusicState",true);
-      this.$store.commit("changeplaylistIndex", index);
+      this.$store.commit("changeSongIndex", index);
     }
   }
 };

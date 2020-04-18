@@ -7,7 +7,7 @@ import discoverMusic from "../views/discoverMusic/discoverMusic";
 import video from "../views/video/video";
 import login from "../views/myMusic/login";
 import myPage from "../views/myMusic/myPage";
-import videoDetailsPage from "../views/video/videoDetailsPage";
+import MVDetailsPage from "../components/MVDetailsPage";
 import playlistDetailsPage from "../components/playlistDetailsPage";
 
 Vue.use(VueRouter);
@@ -17,7 +17,7 @@ const routes = [
     path: "/",
     name: "index",
     component: index,
-    children:[
+    children: [
       {
         path: "/search",
         name: "search",
@@ -27,16 +27,16 @@ const routes = [
         path: "/myMusic",
         name: "myMusic",
         component: myMusic,
-        children:[
+        children: [
           {
-            path:"/myMusic/login",
-            name:"login",
-            component:login
+            path: "/myMusic/login",
+            name: "login",
+            component: login
           },
           {
-            path:"/myMusic/myPage",
-            name:"myPage",
-            component:myPage
+            path: "/myMusic/myPage",
+            name: "myPage",
+            component: myPage
           }
         ]
       },
@@ -51,17 +51,18 @@ const routes = [
         component: video
       },
       {
-        path:"/playlistDetailsPage",
-        name:"playlistDetailsPage",
-        component:playlistDetailsPage
+        path: "/playlistDetailsPage",
+        name: "playlistDetailsPage",
+        component: playlistDetailsPage
+      }, 
+      {
+        path: "/MVDetailsPage",
+        name: "MVDetailsPage",
+        component: MVDetailsPage
       }
     ]
   },
-  {
-    path:"/videoDetailsPage",
-    name:"videoDetailsPage",
-    component:videoDetailsPage
-  }
+
 ];
 
 const router = new VueRouter({

@@ -21,7 +21,8 @@ export default {
   mounted() {},
   methods: {
     toVideoPage() {
-      this.$router.push("/videoDetailsPage");
+      this.$store.commit('changeMVData',this.MVDetail);
+      this.$router.push("/MVDetailsPage");
     }
   }
 };

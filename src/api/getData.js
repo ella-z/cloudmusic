@@ -41,3 +41,59 @@ export function getMusic(id) {
         })
     })
 }
+
+//获取MV的详情
+export function getMV(id) {
+    let url = `http://localhost:3000/mv/detail?mvid=${id}`;
+    return new Promise((resolve,reject)=>{
+        axios({
+            url,method:'get'
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+//获取歌单分类/playlist/catlist
+export function getPlaylistCatlist() {
+    let url = 'http://localhost:3000/playlist/catlist';
+    return new Promise((resolve,reject)=>{
+        axios({
+            url,method:'get'
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+//根据cat来获取相关的歌单
+export function getCatPlaylist(cat){
+    let url = `http://localhost:3000/top/playlist?limit=100&order=hot&cat=${cat}`;
+    return new Promise((resolve,reject)=>{
+        axios({
+            url,method:'get'
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+//获取最新的歌曲
+export function getLatestMusic(type){
+    let url = `http://localhost:3000/top/song?type=${type}`;
+    return new Promise((resolve,reject)=>{
+        axios({
+            url,method:'get'
+        }).then(res => {
+            resolve(res.data.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}

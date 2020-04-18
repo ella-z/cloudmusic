@@ -14,19 +14,19 @@
             <playlist
               :key="index"
               v-for="(item,index) in recommendPlaylists"
-              :recommendPlaylist="recommendPlaylists[index]"
+              :playlistDetails="recommendPlaylists[index]"
             ></playlist>
           </div>
         </div>
 
-        <div class="latest-music">
+        <div class="latest-music"> 
           <headNav title="最新音乐"></headNav>
           <song
             v-for="(item,index) in latestMusic"
             :key="index"
             :number="index+1"
-            :songIndex = index
-            :songs="latestMusic[index]"
+            :songIndex = "index"
+            :songs="latestMusic[index].song"
             :playlist = "latestMusic"
           ></song>
         </div>
@@ -38,9 +38,13 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="歌单" name="second" class="songL"></el-tab-pane>
+      <el-tab-pane label="歌单" name="second">
+        <playlistModule></playlistModule>
+      </el-tab-pane>
       <el-tab-pane label="排行榜" name="third"></el-tab-pane>
-      <el-tab-pane label="最新音乐" name="latestMusic"></el-tab-pane>
+      <el-tab-pane label="最新音乐" name="latestMusic">
+        <latestMusicModule></latestMusicModule>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -50,6 +54,8 @@ import playlist from "../../components/playlist";
 import headNav from "../../components/headNav";
 import song from "../../components/song";
 import MV from "../../components/MV";
+import latestMusicModule from "./latestMusicModule";
+import playlistModule from "./playlistModule";
 import { getRecommend } from "../../api/getRecommend";
 
 export default {
@@ -57,7 +63,9 @@ export default {
     playlist,
     headNav,
     song,
-    MV
+    MV,
+    playlistModule,
+    latestMusicModule
   },
   data() {
     return {
@@ -69,7 +77,7 @@ export default {
       loading:false
     };
   },
-  mounted() {
+  mounted() { 
     this.getData();
   },
   methods: {
@@ -153,14 +161,6 @@ export default {
       justify-content: center;
       align-content: center;
     }
-  }
-  .songL {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 150px);
-    column-gap: 20px;
-    row-gap: 30px;
-    justify-content: center;
-    align-content: center;
   }
 }
 </style>

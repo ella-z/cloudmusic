@@ -2,16 +2,16 @@
   <div class="song" @click="playMusic">
     <div class="song-left">
       <span class="song-number">{{number}}</span>
-      <img :src="songs.picUrl" alt />
+      <img v-lazy="songs.album.blurPicUrl" alt />
       <span class="song-name">{{songs.name}}</span>
     </div>
     <div class="singer">
-      <span :key="index" v-for="(item,index) in songs.song.artists">
+      <span :key="index" v-for="(item,index) in songs.artists">
         {{item.name}}
-        <i v-if="songs.song.artists.length>1&&index!==(songs.song.artists.length-1)">/</i>
+        <i v-if="songs.artists.length>1&&index!==(songs.artists.length-1)">/</i>
       </span>
     </div>
-    <span class="album-name">{{songs.song.album.name}}</span>
+    <span class="album-name">{{songs.album.name}}</span>
     <span class="duration">{{duration}}</span>
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     getAudioLength() {
-      const time = this.songs.song.duration /1000;
+      const time = this.songs.duration /1000;
       let min = parseInt(time/ 60);
       let ss = parseInt(time % 60);
       if (min < 10) {
@@ -42,7 +42,8 @@ export default {
     },
     playMusic(){
       this.$store.commit("changePlaylist",this.playlist);
-      this.$store.commit("changeplaylistIndex",this.songIndex);
+      this.$store.commit("changeSongIndex",this.songIndex);
+     //  this.$store.commit("changeMusicState",true);
     }
   }
 };
