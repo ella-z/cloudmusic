@@ -50,10 +50,10 @@
 </template>
 
 <script>
-import playlist from "../../components/playlist";
+import playlist from "../../components/playlist/playlist";
 import headNav from "../../components/headNav";
 import song from "../../components/song";
-import MV from "../../components/MV";
+import MV from "../../components/MV/MV";
 import latestMusicModule from "./latestMusicModule";
 import playlistModule from "./playlistModule";
 import { getRecommend } from "../../api/getRecommend";

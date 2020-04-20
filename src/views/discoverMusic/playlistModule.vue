@@ -23,7 +23,7 @@
 
 <script>
 import { getPlaylistCatlist, getCatPlaylist } from "../../api/getData";
-import playlist from "../../components/playlist";
+import playlist from "../../components/playlist/playlist";
 import loadingMask from "../../components/loadingMask";
 
 export default {

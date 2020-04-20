@@ -3,9 +3,9 @@ import axios from 'axios';
 //动态获取评论
 export function getComments(id) {
     let url = `http://localhost:3000/comment/event?threadId=${id}`;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         axios({
-            url,method:'get'
+            url, method: 'get'
         }).then(res => {
             resolve(res.data);
         }).catch(err => {
@@ -17,9 +17,9 @@ export function getComments(id) {
 //获取歌词
 export function getLyric(id) {
     let url = `http://localhost:3000/lyric?id=${id}`;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         axios({
-            url,method:'get'
+            url, method: 'get'
         }).then(res => {
             resolve(res.data);
         }).catch(err => {
@@ -31,23 +31,9 @@ export function getLyric(id) {
 //获取音乐url
 export function getMusic(id) {
     let url = `http://localhost:3000/song/url?id=${id}`;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         axios({
-            url,method:'get'
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
-
-//获取MV的详情
-export function getMV(id) {
-    let url = `http://localhost:3000/mv/detail?mvid=${id}`;
-    return new Promise((resolve,reject)=>{
-        axios({
-            url,method:'get'
+            url, method: 'get'
         }).then(res => {
             resolve(res.data);
         }).catch(err => {
@@ -59,9 +45,9 @@ export function getMV(id) {
 //获取歌单分类/playlist/catlist
 export function getPlaylistCatlist() {
     let url = 'http://localhost:3000/playlist/catlist';
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         axios({
-            url,method:'get'
+            url, method: 'get'
         }).then(res => {
             resolve(res.data);
         }).catch(err => {
@@ -71,11 +57,11 @@ export function getPlaylistCatlist() {
 }
 
 //根据cat来获取相关的歌单
-export function getCatPlaylist(cat){
+export function getCatPlaylist(cat) {
     let url = `http://localhost:3000/top/playlist?limit=100&order=hot&cat=${cat}`;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         axios({
-            url,method:'get'
+            url, method: 'get'
         }).then(res => {
             resolve(res.data);
         }).catch(err => {
@@ -85,11 +71,11 @@ export function getCatPlaylist(cat){
 }
 
 //获取最新的歌曲
-export function getLatestMusic(type){
+export function getLatestMusic(type) {
     let url = `http://localhost:3000/top/song?type=${type}`;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
         axios({
-            url,method:'get'
+            url, method: 'get'
         }).then(res => {
             resolve(res.data.data);
         }).catch(err => {
@@ -97,3 +83,4 @@ export function getLatestMusic(type){
         })
     })
 }
+

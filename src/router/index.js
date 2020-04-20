@@ -2,13 +2,14 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import index from "../views/index";
 import search from "../views/search/search";
+import searchPage from "../views/search/searchPage";
 import myMusic from "../views/myMusic/myMusic";
 import discoverMusic from "../views/discoverMusic/discoverMusic";
 import video from "../views/video/video";
 import login from "../views/myMusic/login";
 import myPage from "../views/myMusic/myPage";
-import MVDetailsPage from "../components/MVDetailsPage";
-import playlistDetailsPage from "../components/playlistDetailsPage";
+import MVDetailsPage from "../components/MV/MVDetailsPage";
+import playlistDetailsPage from "../components/playlist/playlistDetailsPage";
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,11 @@ const routes = [
         path: "/search",
         name: "search",
         component: search
+      },
+      {
+        path:"/search/searchPage",
+        name:"searchPage",
+        component:searchPage
       },
       {
         path: "/myMusic",

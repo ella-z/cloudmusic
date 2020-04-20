@@ -1,6 +1,6 @@
 <template>
   <div class="audioPlayer" v-if="isIf">
-    <img :src="audioList[songIndex].picUrl" class="music-img" @click="toSongDetailsPage" />
+    <img v-lazy="audioList[songIndex].picUrl" class="music-img" @click="toSongDetailsPage" />
     <div class="music-button">
       <ul>
         <li @click="switchSong('previous')">

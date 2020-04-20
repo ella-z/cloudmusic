@@ -1,13 +1,13 @@
 <template>
   <div class="playlist" @click="toPlaylistDetailsPage">
     <playCountTag :RePlayCount ="playlistDetails.playCount" icon="&#xe6bf;"></playCountTag>
-    <img :src="playlistDetails.picUrl||playlistDetails.coverImgUrl" alt />
+    <img v-lazy="playlistDetails.picUrl||playlistDetails.coverImgUrl" alt />
     <span>{{playlistDetails.name}}</span>
   </div>
 </template>
 
 <script>
-import playCountTag from '../components/playCountTag'
+import playCountTag from '../../components/playCountTag'
 
 export default {
   props:['playlistDetails'],

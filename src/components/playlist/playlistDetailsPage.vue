@@ -2,7 +2,7 @@
   <div class="playlistDetailsPage" v-loading="loading">
     <i class="iconfont icon" @click="goback()">&#xe607;</i>
     <nav>
-      <img :src="playlistImg" />
+      <img v-lazy="playlistImg" />
       <div class="playlist-introduction">
         <div class="playlist-title playlist">
           <span class="playlistName">{{playlistName}}</span>
@@ -18,7 +18,7 @@
           </span>
         </div>
         <div class="playlist-creator playlist">
-          <img :src="creatorImg" class="creator-img" />
+          <img v-lazy="creatorImg" class="creator-img" />
           <span>{{nickname}}</span>
           <span>{{createTime}}创建</span>
         </div>
@@ -53,9 +53,9 @@
 
 <script>
 //导入js方法的时候要用{}括起来！！！
-import { getPlaylist, getPlaylistComment } from "../api/playlistDetails";
+import { getPlaylist, getPlaylistComment } from "../../api/playlistDetails";
 //import { getMusic } from "../api/getData";
-import comment from "../components/comments";
+import comment from "../../components/comments";
 
 export default {
   components: {

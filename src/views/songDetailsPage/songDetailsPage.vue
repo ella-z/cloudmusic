@@ -1,11 +1,11 @@
 <template>
   <transition name="pageTransition">
     <div class="songDetailsPage">
-      <img :src="songInformation.picUrl" class="song-backgroundImg" />
+      <img v-lazy="songInformation.picUrl" class="song-backgroundImg" />
       <i class="iconfont closeIcon" @click="closePage()">&#xe668;</i>
       <div class="songDetails" v-if="pageShow">
         <div class="song-LP-mask" ref="playImg">
-          <img :src="songInformation.picUrl" class="song-LP-img" />
+          <img v-lazy="songInformation.picUrl" class="song-LP-img" />
         </div>
         <div class="song-information">
           <span class="song-name">{{songInformation.name}}</span>

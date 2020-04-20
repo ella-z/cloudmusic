@@ -1,14 +1,14 @@
 <template>
   <div class="MV" @click="toVideoPage">
     <playCountTag :RePlayCount="MVDetail.playCount" icon="&#xe755;"></playCountTag>
-    <img :src="MVDetail.picUrl" alt class="vedio" />
+    <img :src="MVDetail.picUrl||MVDetail.cover" alt class="vedio" />
     <span class="vedio-name">{{MVDetail.name}}</span>
     <span class="artistName">{{MVDetail.artistName}}</span>
   </div>
 </template>
 
 <script>
-import playCountTag from "../components/playCountTag";
+import playCountTag from "../../components/playCountTag";
 
 export default {
   props: ["MVDetail"],
@@ -16,9 +16,9 @@ export default {
     playCountTag
   },
   data() {
-    return {};
+    return {
+    };
   },
-  mounted() {},
   methods: {
     toVideoPage() {
       this.$store.commit('changeMVData',this.MVDetail);
@@ -41,7 +41,6 @@ export default {
   .vedio {
     width: 100%;
     height: 60%;
-    background-color: pink;
   }
   .vedio-name {
     font-size: 18px;

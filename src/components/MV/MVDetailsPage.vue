@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import { getMV, getComments } from "../api/getData";
-import comment from "../components/comments";
+import { getMVDetail } from "../../api/getMVData";
+import {getComments} from "../../api/getData";
+import comment from "../../components/comments";
 
 
 export default {
@@ -57,7 +58,7 @@ export default {
     },
     async getMVDetailData() {
       this.loading = true;
-      const MVDetailData = await getMV(this.MVData.id);
+      const MVDetailData = await getMVDetail(this.MVData.id);
       try {
         this.vedioSrc = MVDetailData.data.brs[480];
         this.vedioDetails = MVDetailData.data;
