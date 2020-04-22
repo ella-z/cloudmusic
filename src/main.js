@@ -14,6 +14,13 @@ Vue.use(VueLazyload, {
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
 
+
+
+//router跳转的时候返回顶部
+router.afterEach(() => {
+  window.scrollTo(0,0);
+  })
+
 new Vue({
   router,
   store,

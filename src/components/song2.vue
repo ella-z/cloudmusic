@@ -2,13 +2,13 @@
   <div class="song" @click="playMusic">
     <div class="song-left">
       <span class="song-number">{{number}}</span>
-      <img v-lazy="songs.album.blurPicUrl" alt />
+      <img v-lazy="songs.album.picUrl" alt />
       <span class="song-name">{{songs.name}}</span>
     </div>
     <div class="singer">
       <span :key="index" v-for="(item,index) in songs.artists">
         {{item.name}}
-        <i v-if="songs.artists.length>1&&index!==(songs.artists.length-1)">/</i>
+        <i v-if="item.length>1&&index!==(item.length-1)">/</i>
       </span>
     </div>
     <span class="album-name">{{songs.album.name}}</span>
@@ -17,11 +17,13 @@
 </template>
 
 <script>
+//pass
 export default {
   props: ["number", "songs","playlist","songIndex"],
   data() {
     return {
-      duration: ''
+      duration: '',
+      curPlaylist:[]
     };
   },
   mounted() {
@@ -41,6 +43,7 @@ export default {
       this.duration = min + ":" + ss;
     },
     playMusic(){
+      
       this.$store.commit("changePlaylist",this.playlist);
       this.$store.commit("changeSongIndex",this.songIndex);
      //  this.$store.commit("changeMusicState",true);
@@ -82,7 +85,7 @@ export default {
     overflow: hidden;
   }
   .album-name {
-    flex: 2;
+    flex: 3;
   }
   .duration {
     flex: 1;
@@ -90,12 +93,5 @@ export default {
 }
 .song:nth-child(odd) {
   background-color: #f5f5f7;
-}
-span {
-  //当span的内容超过长度时，使用省略号来代替多余的字
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>

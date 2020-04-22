@@ -66,6 +66,7 @@
           .icon {
             color: #fff;
             font-size: 15px;
+      
           }
         }
       }
@@ -76,10 +77,43 @@
         text-align: center;
         .icon {
           font-size: 20px;
+
         }
       }
     }
     .icon{
       font-size: 22px;
+    }
+  }
+  .icon-heart{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+   path{
+      fill:transparent;
+      stroke-width: 50;
+      stroke: black;
+      stroke-dasharray: 3400;
+      stroke-dashoffset: 0;
+    }
+  }
+  .icon-heart-click path{
+    stroke: #e83c3c;
+    animation: animate-heart 1s linear forwards;
+  }
+  @keyframes animate-heart{
+    0%{
+      stroke-dashoffset: 0;
+    }
+    40%{
+      stroke-dashoffset: 3400;
+    }
+    80%{
+      stroke-dashoffset: 6800;
+      fill: transparent;
+    }
+    100%{
+      stroke-dashoffset: 6800;
+      fill: #e83c3c;
     }
   }

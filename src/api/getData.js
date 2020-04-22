@@ -84,3 +84,19 @@ export function getLatestMusic(type) {
     })
 }
 
+//获取歌曲详情
+export function getMusicDetail(ids) {
+    let url = 'http://localhost:3000/song/detail';
+    return new Promise((resolve, reject) => {
+        axios({
+            url, method: 'get',params:{
+                ids:ids
+            }
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+

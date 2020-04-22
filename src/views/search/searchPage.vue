@@ -84,7 +84,6 @@ export default {
         obj[this.type[i].name] = data[this.type[i].name];
       }
       this.searchData = obj;
-      console.log(obj.songs);
       this.loading = false;
     }
   }

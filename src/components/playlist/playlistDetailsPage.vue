@@ -18,7 +18,7 @@
           </span>
         </div>
         <div class="playlist-creator playlist">
-          <img v-lazy="creatorImg" class="creator-img" />
+          <img :src="creatorImg" class="creator-img" />
           <span>{{nickname}}</span>
           <span>{{createTime}}创建</span>
         </div>

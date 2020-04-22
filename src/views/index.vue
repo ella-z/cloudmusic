@@ -13,14 +13,16 @@
     </main>
     <audioPlayer></audioPlayer>
     <audioPlaylist v-show="playListShow" class="playList"></audioPlaylist>
+    <volumeSlider v-show="volumeSliderShow"></volumeSlider>
     <songDetailsPage v-show="pageShow" class="songDetailsPage"></songDetailsPage>
   </div>
-</template>
+</template> 
 
 <script>
 import sideBar from "./sideBar";
 import songDetailsPage from "./songDetailsPage/songDetailsPage";
 import audioPlaylist from "../views/audioPlayer/components/audioPlaylist";
+import volumeSlider from "../views/audioPlayer/components/volumeSlider";
 import audioPlayer from './audioPlayer/audioPlayer';
 
 export default {
@@ -28,6 +30,7 @@ export default {
     sideBar,
     songDetailsPage,
     audioPlaylist,
+    volumeSlider,
     audioPlayer
   },
   data() {
@@ -41,6 +44,9 @@ export default {
     },
     playListShow(){
       return this.$store.state.playListShow;
+    },
+    volumeSliderShow(){
+      return this.$store.state.volumeSliderShow;
     }
   },
   mounted() {
@@ -54,7 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  width: 100vw;
+  width: calc(100vw - 10px);
   height: 35px;
   display: flex;
   flex-direction: row;
@@ -85,7 +91,7 @@ header {
 }
 main {
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   position: relative;
   top: 35px;
   padding-bottom: 150px;
@@ -93,7 +99,7 @@ main {
     position: relative;
     left: 120px;
     top:35px;
-    width: calc(100vw - 120px);
+    width: calc(100vw - 130px);
   }
 }
 </style>

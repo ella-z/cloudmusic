@@ -33,12 +33,13 @@ export function getNewestMV(limit) {
 }
 
 //获取MV 
-export function getMV(area,order,limit,offset) {
+export function getMV(area,type,order,limit,offset) {
     const url = 'http://localhost:3000/mv/all';
     return new Promise((resolve, reject) => {
         axios({
             url, method: 'get', params: {
                 area:area,
+                type:type,
                 order:order,
                 limit: limit,
                 offset:offset
@@ -52,6 +53,22 @@ export function getMV(area,order,limit,offset) {
 }
 
 //获取MV排行
+export function getSimiMV(mvid) {
+    const url = 'http://localhost:3000/simi/mv';
+    return new Promise((resolve, reject) => {
+        axios({
+            url, method: 'get', params: {
+                mvid: mvid,
+            }
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+//获取相似MV
 export function getRanklistMV(limit) {
     const url = 'http://localhost:3000/top/mv';
     return new Promise((resolve, reject) => {

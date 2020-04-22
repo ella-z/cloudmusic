@@ -64,6 +64,7 @@
             v-for="(itemName,index) in searchMultimatchData[itemOrder]"
             :key="index"
             class="result-content-row"
+            @mousedown="search(itemName.name)"
           >
             {{itemName.name}}
             <span
@@ -103,7 +104,34 @@ export default {
       searchContent: false, //是否展示热搜的内容
       inputVal: "", //input框里面的值
       timeout: null, //定时器
-      resultDefault: true //是否展示默认的搜索数据
+      resultDefault: true, //是否展示默认的搜索数据
+      contentTitleArr: [
+        {
+          orderName: "songs",
+          icon: "&#xe600;",
+          text: "单曲"
+        },
+        {
+          orderName: "artists",
+          icon: "&#xe623;",
+          text: "歌手"
+        },
+        {
+          orderName: "albums",
+          icon: "&#xe676;",
+          text: "专辑"
+        },
+        {
+          orderName: "mvs",
+          icon: "&#xe600;",
+          text: "视频"
+        },
+        {
+          orderName: "playlists",
+          icon: "&#xe636;",
+          text: "歌单"
+        }
+      ]
     };
   },
   watch: {

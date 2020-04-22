@@ -8,31 +8,42 @@
       </span>
       <video :src="vedioSrc" controls="controls"></video>
     </div>
-    <div class="video-recommend">
-      <span>MV介绍</span>
-      <div class="recommend-content">简介：{{vedioDetails.desc}}</div>
-    </div>
-    <div class="video-evaluation">
-      <span>评论</span>
-      <div class="comment-nav">精彩评论</div>
-      <span class="tips" v-show="hotComments.length === 0?true:false">暂无数据</span>
-      <comment v-for="(item,index) in hotComments" :key="index" :comment="hotComments[index]"></comment>
-      <div class="comment-nav">最新评论({{commentsCount}})</div>
-      <span class="tips" v-show="comments.length === 0?true:false">暂无数据</span>
-      <comment v-for="(item,index) in comments" :key="'info'+index" :comment="comments[index]"></comment>
+    <div class="imformation">
+      <div class="imformation-left">
+        <div class="video-recommend">
+          <span>MV介绍</span>
+          <div class="recommend-content">简介：{{vedioDetails.desc}}</div>
+        </div>
+        <div class="video-evaluation">
+          <span>评论</span>
+          <div class="comment-nav">精彩评论</div>
+          <span class="tips" v-show="hotComments.length === 0?true:false">暂无数据</span>
+          <comment v-for="(item,index) in hotComments" :key="index" :comment="hotComments[index]"></comment>
+          <div class="comment-nav">最新评论({{commentsCount}})</div>
+          <span class="tips" v-show="comments.length === 0?true:false">暂无数据</span>
+          <comment v-for="(item,index) in comments" :key="'info'+index" :comment="comments[index]"></comment>
+        </div>
+      </div>
+      <div class="imformation-right">
+        <span>相关推荐</span>
+        <div class="simiMV-list">
+          <simpleMV v-for="(item,index) in simiMVArr" :key="index" :MVData="item" class="simiMV"></simpleMV>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getMVDetail } from "../../api/getMVData";
-import {getComments} from "../../api/getData";
+import { getMVDetail, getSimiMV } from "../../api/getMVData";
+import { getComments } from "../../api/getData";
 import comment from "../../components/comments";
-
+import simpleMV from "../MV/simpleMV";
 
 export default {
   components: {
-    comment
+    comment,
+    simpleMV
   },
   data() {
     return {
@@ -40,6 +51,7 @@ export default {
       vedioSrc: "",
       hotComments: [],
       comments: [],
+      simiMVArr: [],
       commentsCount: 0,
       loading: false
     };
@@ -59,6 +71,9 @@ export default {
     async getMVDetailData() {
       this.loading = true;
       const MVDetailData = await getMVDetail(this.MVData.id);
+      const simiMVData = await getSimiMV(this.MVData.id);
+      this.simiMVArr = simiMVData.mvs;
+      console.log(simiMVData);
       try {
         this.vedioSrc = MVDetailData.data.brs[480];
         this.vedioDetails = MVDetailData.data;
@@ -82,7 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .vedioDetailsPage {
-  width: 100vw;
+  width: calc(100vw - 10px);
   min-height: 100vh;
   text-align: center;
   .icon {
@@ -114,40 +129,64 @@ export default {
       height: 15%;
     }
   }
-  span {
-    border-bottom: 2px solid #e83c3c;
-    font-size: 25px;
-    font-weight: 700;
-  }
-  .video-recommend {
-    margin-top: 5%;
-
-    .recommend-content {
-      font-size: 20px;
-      margin: 2% auto;
-      width: 60%;
-      text-align: left;
+  .imformation {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    span {
+      border-bottom: 2px solid #c62f2f;
+      font-size: 25px;
+      font-weight: 700;
+      padding: 10px;
     }
-  }
-  .video-evaluation {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 5% auto 0;
-    width: 70%;
-    .tips {
-      font-size: 16px;
-      font-weight: 500;
-      border:none;
-      margin-top: 50px;
+    .imformation-left {
+      .video-recommend {
+        margin-top: 5%;
+        .recommend-content {
+          font-size: 20px;
+          margin: 2% auto;
+          width: 80%;
+          text-align: left;
+        }
+      }
+      .video-evaluation {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 5% auto 0;
+        width: 80%;
+        .tips {
+          font-size: 16px;
+          font-weight: 500;
+          border: none;
+          margin-top: 50px;
+        }
+        .comment-nav {
+          width: 100%;
+          height: 30px;
+          text-align: left;
+          border-bottom: 1px solid #e1e1e2;
+          margin-top: 5%;
+        }
+      }
     }
-    .comment-nav {
-      width: 100%;
-      height: 30px;
-      text-align: left;
-      border-bottom: 1px solid #e1e1e2;
-      margin-top: 5%;
+    .imformation-right {
+      padding: 60px 10px;
+      min-height: 100vh;
+      span {
+        margin: 0 auto;
+        display: block;
+        margin-bottom: 20px;
+        width: 60%;
+      }
+      .simiMV-list {
+        width: 80%;
+        text-align: center;
+        margin:0 auto;
+        .simiMV{
+          margin-bottom: 20px;
+        }
+      }
     }
   }
 }

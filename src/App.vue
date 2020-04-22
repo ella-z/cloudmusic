@@ -24,7 +24,7 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-* {
+* { 
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -38,9 +38,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  width: 100vw;
+  width: calc(100vw - 10px);
   min-height: 100vh;
 }
+
+
 
 .el-tabs__nav-scroll {
   display: flex;
@@ -56,5 +58,8 @@
   .el-tabs__active-bar {
     background-color: #c62f2f;
   }
+}
+.el-radio-button__orig-radio:checked + .el-radio-button__inner{
+  box-shadow:-1px 0 0 0 #c62f2f !important;
 }
 </style>

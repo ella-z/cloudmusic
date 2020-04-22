@@ -41,7 +41,7 @@
       <el-tab-pane label="歌单" name="second">
         <playlistModule></playlistModule>
       </el-tab-pane>
-      <el-tab-pane label="排行榜" name="third"></el-tab-pane>
+      <!--<el-tab-pane label="排行榜" name="third"></el-tab-pane>-->
       <el-tab-pane label="最新音乐" name="latestMusic">
         <latestMusicModule></latestMusicModule>
       </el-tab-pane>

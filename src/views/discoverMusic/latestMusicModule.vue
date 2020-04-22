@@ -7,8 +7,8 @@
       <el-radio-button label="日语"></el-radio-button>
       <el-radio-button label="韩语"></el-radio-button>
     </el-radio-group>
-    <div class="latestMusic-content" >
-    <div class="latestMusic-mask" v-loading="loading" v-show="loading"></div>
+    <div class="latestMusic-content">
+      <div class="latestMusic-mask" v-loading="loading" v-show="loading"></div>
       <song
         v-for="(item,index) in latestMusics"
         :key="index"
@@ -17,7 +17,7 @@
         :songs="latestMusics[index]"
         :playlist="latestMusicsPlaylist"
       ></song>
-    </div> 
+    </div>
   </div>
 </template>
 
@@ -34,14 +34,13 @@ export default {
       radio: "全部",
       radioValue: 0,
       latestMusics: [],
-      loading:false,
-      latestMusicsPlaylist:[]
+      loading: false,
+      latestMusicsPlaylist: []
     };
   },
   watch: {
     radioValue(val) {
       this.getLatestMusicData(val);
-      
     }
   },
   mounted() {
@@ -49,27 +48,26 @@ export default {
   },
   methods: {
     async getLatestMusicData(val) {
-        this.loading= true;
+      this.loading = true;
       const latestMusicData = await getLatestMusic(val);
       try {
         this.latestMusics = latestMusicData;
-        this.latestMusicsPlaylist=[];
+        this.latestMusicsPlaylist = [];
         latestMusicData.forEach(element => {
           this.latestMusicsPlaylist.push({
-            picUrl:element.album.blurPicUrl,
-            id:element.id,
-            name:element.name,
-            song:{
-              artists:element.artists,
-              album:element.album
+            picUrl: element.album.blurPicUrl,
+            id: element.id,
+            name: element.name,
+            song: {
+              artists: element.artists,
+              album: element.album
             }
           });
         });
-       
       } catch (error) {
         console.log(error);
       }
-       this.loading= false;
+      this.loading = false;
     },
     changeCat(val) {
       switch (val) {
@@ -116,14 +114,15 @@ export default {
   .latestMusic-content {
     margin-top: 3%;
     position: relative;
-    .latestMusic-mask{
-        width: 100%;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index:9;
+    .latestMusic-mask {
+      width: 100%;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9;
     }
   }
 }
+
 </style>
