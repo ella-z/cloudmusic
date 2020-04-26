@@ -11,7 +11,7 @@
               :class="[index===0?'first-MV':'']"
               :MVData="newestMVArr[index]"
             ></simpleMV>
-          </div>
+          </div> 
         </div>
         <div class="hit-MV">
           <headNav title="热播MV"></headNav>

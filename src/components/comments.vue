@@ -8,7 +8,7 @@
       <br />
       <span class="comment-time">{{commentTime}}</span>
     </div>
-  </div> 
+  </div>
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
   props: ["comment"],
   data() {
     return {
-      commentTime:''
+      commentTime: ""
     };
   },
   mounted() {
@@ -32,10 +32,11 @@ export default {
           ? "0" + (time.getMonth() + 1)
           : time.getMonth() + 1) +
         "月" +
-        (time.getDate() < 10 ? "0" + time.getDate() : time.getDate())+
-        "日"+" "+  
-        (time.getHours() < 10 ? "0" + time.getHours() : time.getHours())+
-        ":"+
+        (time.getDate() < 10 ? "0" + time.getDate() : time.getDate()) +
+        "日" +
+        " " +
+        (time.getHours() < 10 ? "0" + time.getHours() : time.getHours()) +
+        ":" +
         (time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes());
     }
   }
@@ -46,20 +47,22 @@ export default {
 .comments {
   border-bottom: 1px solid #e1e1e2;
   width: 100%;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+  padding: 25px 0;
   img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-right: 2%;
+    justify-self: center;
+    align-self: flex-start;
   }
   .observer {
     text-align: left;
+    padding-left: 10px;
     span {
-      font-size: 20px;
+      font-size: 18px;
+      color: #000;
     }
     .observer-name {
       color: #0c73c2;

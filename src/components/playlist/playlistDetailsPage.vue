@@ -4,7 +4,7 @@
     <nav>
       <img v-lazy="playlistImg" />
       <div class="playlist-introduction">
-        <div class="playlist-title playlist">
+        <div class="playlist-title">
           <span class="playlistName">{{playlistName}}</span>
           <span>
             歌曲数
@@ -24,7 +24,7 @@
         </div>
         <div class="playlist-tags playlist">
           <span>标签：</span>
-          <a href v-for="(item,index) in tags" :key="index">{{item}}/</a>
+          <a href v-for="(item,index) in tags" :key="index" > {{item}} / </a>
         </div>
         <div class="playlist-recommend">简介：{{description}}</div>
       </div>
@@ -182,13 +182,21 @@ export default {
   min-height: 100vh;
   .icon {
     position: absolute;
-    top: 5px;
-    right: 50px;
+    top: -20px;
+    right: 10px;
+    z-index: 9;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 1px #ccc;
   }
   nav {
     display: grid;
     grid-template-columns: 1fr 3fr;
+    column-gap: 10px;
     justify-items: center;
     align-items: start;
     img {
@@ -203,33 +211,36 @@ export default {
       grid-template-rows: repeat(auto-fill, 75px);
       justify-items: start;
       align-items: center;
+      
       .playlist {
         display: flex;
         flex-direction: row;
         align-items: center;
       }
       .playlist-title {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 5fr 1fr 1fr;
         .playlistName {
           color: #000;
           font-size: 35px;
           font-weight: 700;
+          margin: 0 15px 0 0;
         }
         span {
           color: #999999;
           font-size: 15px;
-          margin-right: 30px;
+          margin-top: 5px;
         }
-      }
-      span {
-        font-size: 20px;
-        margin-right: 15px;
-        color: #000;
       }
       .playlist-creator {
         .creator-img {
           width: 40px;
           height: 40px;
           border-radius: 50%;
+          margin-right: 15px;
+        }
+        span{
           margin-right: 15px;
         }
       }

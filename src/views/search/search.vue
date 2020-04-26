@@ -98,7 +98,7 @@ export default {
     return {
       searchHotData: [], //简约版热搜数据
       searchHotDetailData: [], //热搜数据
-      searchMultimatchData: [],
+      searchMultimatchData: [],//搜索的时候符合条件的数据
       loading: false,
       searchResultLoading: false,
       searchContent: false, //是否展示热搜的内容

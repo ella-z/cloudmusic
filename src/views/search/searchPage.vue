@@ -1,13 +1,22 @@
 <template>
   <div class="searchPage" v-loading="loading">
     <div class="result-display">
-      <div>搜索<span class="keyword">"{{this.searchWord}}"</span></div>
+      <div>
+        搜索
+        <span class="keyword">"{{this.searchWord}}"</span>
+      </div>
       <button @click="cancel()">取消搜索</button>
     </div>
 
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" v-if="searchData!==null">
       <el-tab-pane label="单曲" name="songs">
-        <el-table :data="searchData.songs" style="width: 100%" :stripe="true" @row-click="rowClick">
+        <el-table
+          :data="searchData.songs"
+          style="width: 100%"
+          :stripe="true"
+          @row-click="rowClick"
+          :row-class-name="tableRowClassName"
+        >
           <el-table-column type="index" width="50"></el-table-column>
           <el-table-column prop="name" label="音乐标题" sortable width="500"></el-table-column>
           <el-table-column prop="artists[0].name" label="歌手" sortable width="300"></el-table-column>
@@ -54,7 +63,7 @@ export default {
     return {
       activeName: "songs",
       loading: false,
-      searchData: "",
+      searchData: null,
       searchWord: this.$route.query.searchWord,
       type: [
         { name: "songs", type: 1 },
@@ -69,12 +78,20 @@ export default {
     this.getSearchData();
   },
   methods: {
-    cancel(){
+    cancel() {
       this.$router.go(-1);
     },
-    rowClick(row){
-      this.$store.commit("changeSongIndex",row.index);
-      this.$store.commit("changePlaylist",this.searchData.songs);
+    rowClick(row) {
+       this.$store.commit("changeSongIndex",row.index);
+      console.log(row.id);
+      console.log(row.index);
+      console.log(this.searchData.songs);
+      //console.log(this.searchData.songs.id);
+       this.$store.commit("changePlaylist",this.searchData.songs);
+    },
+    tableRowClassName({row, rowIndex}){
+      //为表格的每行添加索引
+      row.index = rowIndex;
     },
     async getSearchData() {
       this.loading = true;
@@ -100,8 +117,8 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    .keyword{
-      color: #0C73C2;
+    .keyword {
+      color: #0c73c2;
     }
     button {
       width: 100px;
@@ -111,7 +128,6 @@ export default {
       border-radius: 30px;
       cursor: pointer;
     }
-
   }
   .mvs {
     display: grid;

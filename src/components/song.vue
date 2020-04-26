@@ -43,7 +43,6 @@ export default {
     playMusic(){
       this.$store.commit("changePlaylist",this.playlist);
       this.$store.commit("changeSongIndex",this.songIndex);
-     //  this.$store.commit("changeMusicState",true);
     }
   }
 };

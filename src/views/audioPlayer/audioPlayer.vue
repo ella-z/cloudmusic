@@ -1,6 +1,6 @@
 <template>
-  <div class="audioPlayer" v-if="isIf">
-    <img v-lazy="audioList[songIndex].picUrl" class="music-img" @click="toSongDetailsPage" />
+  <div class="audioPlayer" v-if="songDetail">
+    <img v-lazy="songDetail.al.picUrl" class="music-img" @click="toSongDetailsPage" />
     <div class="music-button">
       <ul>
         <li @click="switchSong('previous')">
@@ -27,10 +27,10 @@
       <div class="audio-display">
         <div class="audio-display-top">
           <div class="audio-display-title">
-            {{audioList[songIndex].name}} —
+            {{songDetail.name}} —
             <span
               :key="index"
-              v-for="(item,index) in audioList[songIndex].song.artists"
+              v-for="(item,index) in songDetail.ar"
             >
               {{item.name}}
               <i v-if="item.length>1&&index!==(item.length-1)">/</i>
@@ -53,11 +53,10 @@
         </div>
       </div>
     </div>
-    <i class="icon like-button" @click="like()">
+    <i class="icon like-button" >
       <svg
         t="1587483829379"
         class="icon-heart"
-        :class="isDislike?'':'icon-heart-click'"
         viewBox="-15 0 1200 1024"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -77,20 +76,21 @@
 </template>
 
 <script>
-//import {insertLikeSong} from '../../api/getUser';
+import {getMusicDetail} from '../../api/getData';
 
 export default {
   data() {
     return {
       isIf: false,
       value: 0,
-      audio: "", //音频
       audioLength: 0,
       currentTime: 0, //当前播放时间
       lastTime: null, //标记时间戳
       totalTime: "00:00", //音频总时长
       presentTime: "00:00",
-      audioList: []
+      audioList: [],
+      songIndex:this.$store.state.songIndex,//当前播放的歌曲在歌单中的下标
+      songDetail:null
     };
   },
   watch: {
@@ -108,10 +108,7 @@ export default {
     "$store.state.playlist": function(val) {
       this.audioList = val;
       this.isIf = true;
-      if (!this.audioList[this.songIndex].canDislike) {
-        //pass
-        this.audioList[this.songIndex].canDislike = true;
-      }
+      this.getMusicData(this.songIndex);
     },
     "$store.state.curvolume": function(val) {
       //监控当前音量
@@ -119,18 +116,14 @@ export default {
         const audio = this.$refs.audio;
         audio.volume = val;
       }
+    },
+    "$store.state.songIndex":function(val){
+      //当前播放的歌曲在歌单中的下标
+       this.getMusicData(val);
+       this.songIndex= val;
     }
   },
   computed: {
-    isDislike: {
-      get: function() {
-        return this.audioList[this.songIndex].canDislike;
-      },
-      set: function(val) {
-        console.log(val);
-        this.audioList[this.songIndex].canDislike = val;
-      }
-    },
     playListShow() {
       return this.$store.state.playListShow;
     },
@@ -146,15 +139,6 @@ export default {
         this.$store.commit("changeMusicState", val);
       }
     },
-    songIndex: {
-      //当前播放的歌曲在歌单中的下标
-      get: function() {
-        return this.$store.state.songIndex;
-      },
-      set: function(val) {
-        this.$store.commit("changeSongIndex", val);
-      }
-    }
   },
   mounted() {
     if (this.$store.state.playlist.length === 0) {
@@ -244,27 +228,13 @@ export default {
     },
     toShowVolumeSlider() {
       this.$store.commit("changevolumeSliderState", !this.volumeSliderShow);
-    }
-    /* async like() {
-      var allcookies = document.cookie;
-      //索引长度，开始索引的位置
-      var cookie_pos = allcookies.indexOf("iduser");
-
-      // 如果找到了索引，就代表cookie存在,否则不存在
-      if (cookie_pos != -1) {
-        this.isDislike = !this.isDislike;
-        console.log(this.audioList[this.songIndex].id);
-        let idmusic = this.audioList[this.songIndex].id;
-        await insertLikeSong(idmusic);
-      } else {
-        this.open();
-      }
     },
-    open() {
-      this.$alert("请先登录", "", {
-        confirmButtonText: "确定"
-      });
-    }*/
+    async getMusicData(val){
+      //获取音乐的详情
+      const musicDetail = await getMusicDetail(this.audioList[val].id);
+      this.songDetail = musicDetail.songs[0];
+    }
+
   }
 };
 </script>

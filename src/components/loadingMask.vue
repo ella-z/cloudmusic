@@ -10,7 +10,7 @@ export default {
 
 <style lang="scss" scoped>
 .mask {
-  width: calc(100vw - 10px);
+  width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;

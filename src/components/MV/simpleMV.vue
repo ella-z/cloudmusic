@@ -11,7 +11,7 @@ import playCountTag from "../playCountTag";
 export default {
   components: {
     playCountTag
-  },
+  }, 
   props: ["MVData"],
   methods:{
       toVideoPage() {

@@ -8,9 +8,9 @@
       </span>
       <video :src="vedioSrc" controls="controls"></video>
     </div>
-    <div class="imformation">
-      <div class="imformation-left">
-        <div class="video-recommend">
+    <div class="imformation" v-if="vedioDetails">
+      <div class="imformation-left" >
+        <div class="video-recommend" v-show="vedioDetails.desc">
           <span>MV介绍</span>
           <div class="recommend-content">简介：{{vedioDetails.desc}}</div>
         </div>
@@ -33,7 +33,7 @@
     </div>
   </div>
 </template>
-
+ 
 <script>
 import { getMVDetail, getSimiMV } from "../../api/getMVData";
 import { getComments } from "../../api/getData";
@@ -47,21 +47,23 @@ export default {
   },
   data() {
     return {
-      vedioDetails: "",
-      vedioSrc: "",
-      hotComments: [],
-      comments: [],
-      simiMVArr: [],
-      commentsCount: 0,
-      loading: false
+      vedioDetails: null, //MV的详细信息
+      vedioSrc: "",       //MV的来源
+      hotComments: [],    //热搜评价的数组
+      comments: [],       //评价的数组
+      simiMVArr: [],      //相似MV的数组
+      commentsCount: 0,   //评价的总数
+      loading: false,
+      MVData:this.$store.state.MVData
     };
   },
-  mounted() {
+  created() {
     this.getMVDetailData();
   },
-  computed: {
-    MVData() {
-      return this.$store.state.MVData;
+  watch:{
+    '$store.state.MVData'(val){
+      this.MVData = val;
+      this.getMVDetailData();
     }
   },
   methods: {
@@ -70,26 +72,25 @@ export default {
     },
     async getMVDetailData() {
       this.loading = true;
-      const MVDetailData = await getMVDetail(this.MVData.id);
-      const simiMVData = await getSimiMV(this.MVData.id);
-      this.simiMVArr = simiMVData.mvs;
-      console.log(simiMVData);
       try {
+        //获取MV的详细信息以及相关推荐
+        const MVDetailData = await getMVDetail(this.MVData.id);
+        const simiMVData = await getSimiMV(this.MVData.id);
+        this.simiMVArr = simiMVData.mvs;
         this.vedioSrc = MVDetailData.data.brs[480];
         this.vedioDetails = MVDetailData.data;
-      } catch (error) {
-        console.log(error);
-      }
-      const MVcomment = await getComments(this.vedioDetails.commentThreadId);
-      try {
+
+        //获取MV的评价
+        const MVcomment = await getComments(this.vedioDetails.commentThreadId);
         let { hotComments, comments, total } = MVcomment;
         this.hotComments = hotComments;
         this.comments = comments;
         this.commentsCount = total;
+        this.loading = false;
       } catch (error) {
+        this.loading = false;
         console.log(error);
       }
-      this.loading = false;
     }
   }
 };
@@ -97,7 +98,7 @@ export default {
 
 <style lang="scss" scoped>
 .vedioDetailsPage {
-  width: calc(100vw - 10px);
+  width: 100vw;
   min-height: 100vh;
   text-align: center;
   .icon {
@@ -143,7 +144,8 @@ export default {
         margin-top: 5%;
         .recommend-content {
           font-size: 20px;
-          margin: 2% auto;
+          margin: 5% auto;
+          line-height: 30px;
           width: 80%;
           text-align: left;
         }
@@ -182,8 +184,8 @@ export default {
       .simiMV-list {
         width: 80%;
         text-align: center;
-        margin:0 auto;
-        .simiMV{
+        margin: 0 auto;
+        .simiMV {
           margin-bottom: 20px;
         }
       }
