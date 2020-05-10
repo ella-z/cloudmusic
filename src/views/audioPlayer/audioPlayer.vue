@@ -127,6 +127,9 @@ export default {
     playListShow() {
       return this.$store.state.playListShow;
     },
+    songPageShow(){
+      return this.$store.state.songPageShow;
+    },
     volumeSliderShow() {
       return this.$store.state.volumeSliderShow;
     },
@@ -147,7 +150,7 @@ export default {
       this.isIf = true;
     }
   },
-  methods: {
+  methods: { 
     changeMusicState() {
       //改变音频状态，暂停或者播放
       this.musicState = !this.musicState;
@@ -193,9 +196,9 @@ export default {
       //展示歌曲详情页
       this.$store.commit(
         "changeSongInformation",
-        this.audioList[this.songIndex]
+        this.songDetail
       );
-      this.$store.commit("changeSongPageState", true);
+      this.$store.commit("changeSongPageState", !this.songPageShow);
     },
     toPlayList(val) {
       //是否展示歌曲列表

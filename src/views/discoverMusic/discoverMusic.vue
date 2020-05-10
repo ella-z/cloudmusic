@@ -21,7 +21,7 @@
 
         <div class="latest-music"> 
           <headNav title="最新音乐"></headNav>
-          <song
+          <song 
             v-for="(item,index) in latestMusic"
             :key="index"
             :number="index+1"

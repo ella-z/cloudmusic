@@ -7,9 +7,11 @@ import myMusic from "../views/myMusic/myMusic";
 import discoverMusic from "../views/discoverMusic/discoverMusic";
 import video from "../views/video/video";
 import login from "../views/myMusic/login";
+import register from "../views/myMusic/register";
 import myPage from "../views/myMusic/myPage";
 import MVDetailsPage from "../components/MV/MVDetailsPage";
 import playlistDetailsPage from "../components/playlist/playlistDetailsPage";
+import  mobileLogin  from "../views/myMusic/mobileLogin";
 
 //this.$router.push相同地址报错的解决办法
 const originalPush = VueRouter.prototype.push
@@ -46,9 +48,19 @@ const routes = [
             component: login
           },
           {
-            path: "/myMusic/myPage",
-            name: "myPage",
-            component: myPage
+            path: "/myMusic/mobileLogin",
+            name: "mobileLogin",
+            component: mobileLogin
+          },
+          {
+            path:'/register',
+            name:'register',
+            component:register
+          },
+          {
+           path:'/myPage',
+           name:'myPage',
+           component:myPage  
           }
         ]
       },

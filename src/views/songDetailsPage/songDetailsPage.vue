@@ -1,26 +1,31 @@
 <template>
   <transition name="pageTransition">
-    <div class="songDetailsPage">
-      <img v-lazy="songInformation.picUrl" class="song-backgroundImg" />
+    <div class="songDetailsPage" v-if="songInformation">
+      <img :src="songInformation.al.picUrl" class="song-backgroundImg" />
       <i class="iconfont closeIcon" @click="closePage()">&#xe668;</i>
-      <div class="songDetails" v-if="pageShow">
+      <div class="songDetails">
         <div class="song-LP-mask" ref="playImg">
-          <img v-lazy="songInformation.picUrl" class="song-LP-img" />
+          <img :src="songInformation.al.picUrl" class="song-LP-img" />
         </div>
         <div class="song-information">
           <span class="song-name">{{songInformation.name}}</span>
           <div class="song-album">
-            <span>专辑：{{songInformation.song.album.name}}</span>
+            <span>专辑：{{songInformation.al.name}}</span>
             歌手：
-            <span :key="index" v-for="(item,index) in songInformation.song.artists">
+            <span :key="index" v-for="(item,index) in songInformation.ar">
               {{item.name}}
               <i
-                v-if="songInformation.song.artists.length>1&&index!==(songInformation.song.artists.length-1)"
-              > / </i>
+                v-if="songInformation.ar.length>1&&index!==(songInformation.ar.length-1)"
+              >/</i>
             </span>
           </div>
           <div class="song-words">
-            <span v-for="(value,key,index) in lyrics" :key="index" :class="{words:key == `${audioCurrentTime}`}">{{value}}</span><br />
+            <span
+              v-for="(value,key,index) in lyrics"
+              :key="index"
+              :class="{words:index==lyricsIndex}"
+            >{{value}}</span>
+            <br /> 
           </div>
           <div class="song-icon">
             <i class="iconfont">&#xe60a;</i>
@@ -36,28 +41,31 @@ import { getLyric } from "../../api/getData";
 export default {
   data() {
     return {
-      lyrics: {},
+      lyrics: null,
+      lyricsIndex:0,
+      songInformation:this.$store.state.songInformation,
+      audioCurrentTime:this.$store.state.audioCurrentTime
     };
   },
-  created() {},
   watch: {
-    songInformation() {
+    "$store.state.songInformation": function(val) {
+      this.lyricsIndex=0; 
+      this.songInformation = val;
       this.getLyricData();
     },
-    audioCurrentTime(){
-      
-    }
+    "$store.state.audioCurrentTime": function(val) {
+      for (const key in this.lyrics) {
+        if(key == val&& this.lyrics[this.lyricsIndex]!==''){
+           console.log(val);
+          this.lyricsIndex++;
+        }
+      }
+    },
   },
   computed: {
     pageShow() {
       return this.$store.state.songPageShow;
     },
-    songInformation() {
-      return this.$store.state.songInformation;
-    },
-    audioCurrentTime(){
-      return this.$store.state.audioCurrentTime;
-    }
   },
   methods: {
     closePage() {

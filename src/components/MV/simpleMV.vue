@@ -11,11 +11,11 @@ import playCountTag from "../playCountTag";
 export default {
   components: {
     playCountTag
-  }, 
+  },
   props: ["MVData"],
-  methods:{
-      toVideoPage() {
-      this.$store.commit('changeMVData',this.MVData);
+  methods: {
+    toVideoPage() {
+      this.$store.commit("changeMVData", this.MVData);
       this.$router.push("/MVDetailsPage");
     }
   }
@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" scoped>
 .simpleMV {
-  width: 100%;
+  width: 300px;
   height: 180px;
   background-size: 100% 100%;
   position: relative;
@@ -33,7 +33,12 @@ export default {
     position: relative;
     left: 5%;
     top: 85%;
+    width: 80%;
     color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

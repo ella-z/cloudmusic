@@ -1,6 +1,6 @@
 <template>
   <transition name="playListTransition">
-    <div class="audioPlaylist">
+    <div class="audioPlaylist" >
       <nav>
         <span>播放列表</span>
         <i class="iconfont icon" @click="toClose()">&#xe607;</i>
@@ -9,16 +9,17 @@
         <span class="list-count">
           <i></i>
           总共{{playlistData.length}}首
-        </span>
+        </span> 
         <ul class="playlist">
           <li v-for="(item,index) in playlistData" :key="index" @click="playMusic(index)">
-            <div v-show="index== songIndex ?true :false ">
+            <div v-show="index === songIndex">
               <i class="iconfont icon" v-show="!musicState">&#xe63d;</i>
               <i class="iconfont icon" v-show="musicState">&#xe61d;</i>
             </div>
-            <span v-show="index== songIndex ?false :true "></span>
+            <span v-show="index !== songIndex  "></span>
             <span>{{playlistData[index].name}}</span>
-            <span>{{playlistData[index].song.album.name}}</span>
+            <span v-if="playlistData[index].song">{{playlistData[index].song.album.name}}</span>
+            <span v-else-if="playlistData[index]">{{playlistData[index].album.name}}</span>
           </li>
         </ul>
       </div>
@@ -28,13 +29,15 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  data(){
+    return{
+  
+    }
   },
   computed: {
     playlistData() {
       return this.$store.state.playlist;
-    },
+    }, 
     musicState() {
       return this.$store.state.musicState;
     },

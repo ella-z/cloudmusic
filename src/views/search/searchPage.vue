@@ -86,7 +86,6 @@ export default {
       console.log(row.id);
       console.log(row.index);
       console.log(this.searchData.songs);
-      //console.log(this.searchData.songs.id);
        this.$store.commit("changePlaylist",this.searchData.songs);
     },
     tableRowClassName({row, rowIndex}){

@@ -57,7 +57,7 @@ import { getPlaylist, getPlaylistComment } from "../../api/playlistDetails";
 //import { getMusic } from "../api/getData";
 import comment from "../../components/comments";
 
-export default {
+export default { 
   components: {
     comment
   },

@@ -9,7 +9,7 @@ export default new Vuex.Store({
     playListShow:false, //歌曲列表是否展示
     volumeSliderShow:false,//音量滑块是否显示
     playlist:[],//正在播放的歌单
-    songInformation:'',//正在播放的歌曲的信息
+    songInformation:null,//正在播放的歌曲的信息
     songIndex:0, //歌单中歌曲的下标
     audioCurrentTime:'', //当前audio播放的时间
     musicState:false, //当前音乐播放的状态
