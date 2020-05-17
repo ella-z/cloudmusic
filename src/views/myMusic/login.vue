@@ -16,6 +16,11 @@
 
 <script>
 export default {
+  mounted(){
+     if(this.$cookies.isKey('uid')){
+        this.$router.push({name:'myPage'});
+     }
+  },
   methods:{
     toMobileLogin(){
       this.$router.push({name:'mobileLogin'});

@@ -2,7 +2,7 @@
   <div class="mobileLogin">
     <i class="iconfont icon" @click="goback()">&#xe622;</i>
     <span class="mobileLogin-title">Mobile Number Login</span>
-    <div class="mobileLogin-box">   
+    <div class="mobileLogin-box">
       <div class="mobile-number mobile-box">
         <i class="iconfont mobile-icon number-icon">&#xe67e;</i>
         <input
@@ -28,7 +28,7 @@
         />
         <span>重设密码</span>
       </div>
-       <errorMessage :message="errorMsg" v-show="showErrorMsg"></errorMessage>
+      <errorMessage :message="errorMsg" v-show="showErrorMsg"></errorMessage>
       <button class="login-btton" @click="login()">登 录</button>
     </div>
   </div>
@@ -45,14 +45,14 @@ export default {
   data() {
     return {
       errorMsg: "",
-      showErrorMsg:false
+      showErrorMsg: false
     };
   },
   methods: {
     goback() {
       this.$router.go(-1);
     },
-    async login() {
+    async login() { //登录验证
       let account = this.$refs.mobileNumber.value.replace(/\s+/g, "");
       let pwd = this.$refs.password.value;
       const reg = /^1[3456789]\d{9}$/;
@@ -60,17 +60,17 @@ export default {
         this.showErrorMsg = true;
         this.errorMsg = "手机号不能为空";
       } else if (!reg.test(account)) {
+        //验证输入的手机号码是否符合格式
         this.showErrorMsg = true;
         this.errorMsg = "请输入正确的手机号";
       } else {
         this.showErrorMsg = false;
-        let userImformation = await postUser(account, pwd);
-        console.log(userImformation);
-        let code = userImformation.code;
-        if (code === 200) {
-         this.$router.push({name:'myPage'});
-        } else if (code === 502) {
-          this.errorMsg = userImformation.msg;
+        let userInformation = await postUser(account, pwd); //提交手机号以及密码
+        if (userInformation.code === 200) {
+          this.$cookies.set('uid',userInformation.account.id,'1d');
+          this.$router.push({ name: "myPage" });
+        } else if (userInformation.code === 502) {
+          this.errorMsg = userInformation.msg;
         }
       }
     }

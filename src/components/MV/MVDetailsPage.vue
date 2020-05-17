@@ -8,8 +8,8 @@
       </span>
       <video :src="vedioSrc" controls="controls"></video>
     </div>
-    <div class="imformation" v-if="vedioDetails">
-      <div class="imformation-left" >
+    <div class="information" v-if="vedioDetails">
+      <div class="information-left" >
         <div class="video-recommend" v-show="vedioDetails.desc">
           <span>MV介绍</span>
           <div class="recommend-content">简介：{{vedioDetails.desc}}</div>
@@ -24,7 +24,7 @@
           <comment v-for="(item,index) in comments" :key="'info'+index" :comment="comments[index]"></comment>
         </div>
       </div>
-      <div class="imformation-right">
+      <div class="information-right">
         <span>相关推荐</span>
         <div class="simiMV-list">
           <simpleMV v-for="(item,index) in simiMVArr" :key="index" :MVData="item" class="simiMV"></simpleMV>
@@ -130,7 +130,7 @@ export default {
       height: 15%;
     }
   }
-  .imformation {
+  .information {
     display: grid;
     grid-template-columns: 2.5fr 1fr;
     span {
@@ -139,7 +139,7 @@ export default {
       font-weight: 700;
       padding: 10px;
     }
-    .imformation-left {
+    .information-left {
       .video-recommend {
         margin-top: 5%;
         .recommend-content {
@@ -172,7 +172,7 @@ export default {
         }
       }
     }
-    .imformation-right {
+    .information-right {
       padding: 60px 10px;
       min-height: 100vh;
       span {
