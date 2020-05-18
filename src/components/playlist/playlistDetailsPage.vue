@@ -201,7 +201,7 @@ export default {
     align-items: start;
     img {
       width: 250px;
-      height: 300px;
+      height: 290px;
     }
     .playlist-introduction {
       width: 100%;

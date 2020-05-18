@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-export function getSearch(keywords,type) {
+export function getSearch(keywords,type,offset) {
     let url = 'http://localhost:3000/search';
     return new Promise((resolve, reject) => {
         axios({ url, method: 'get',params:{
-            limit:20,
-            keywords:keywords,
-            type:type
+            keywords,
+            type,
+            offset
         } }).then(res => {
             resolve(res.data.result);
         }).catch(err => {

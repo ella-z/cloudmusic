@@ -8,37 +8,48 @@
       <button @click="cancel()">取消搜索</button>
     </div>
 
-    <el-tabs v-model="activeName" v-if="searchData!==null">
-      <el-tab-pane label="单曲" name="songs">
+    <el-tabs v-model="activeName" v-if="searchData.length!==0">
+      <el-tab-pane label="单曲" name="songs" class="song">
         <el-table
-          :data="searchData.songs"
+          :data="searchData[0].songs"
           style="width: 100%"
           :stripe="true"
           @row-click="rowClick"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column type="index" width="50"></el-table-column>
+          <el-table-column type="index" width="50" align="center">
+            <template slot-scope="scope">
+              <span>{{(type[0].offset) * 30 + scope.$index + 1}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="name" label="音乐标题" sortable width="500"></el-table-column>
           <el-table-column prop="artists[0].name" label="歌手" sortable width="300"></el-table-column>
           <el-table-column prop="album[name]" label="专辑" sortable width="300"></el-table-column>
         </el-table>
+        <div class="block">
+          <el-pagination
+            layout="prev, pager, next"
+            :total="searchData[0].songCount*10"
+            @current-change="pageChange"
+          ></el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="歌手" name="artists">
-        <artists v-for="(item,index) in searchData.artists " :key="index" :artist="item"></artists>
+        <artists v-for="(item,index) in searchData[1].artists " :key="index" :artist="item"></artists>
       </el-tab-pane>
       <el-tab-pane label="专辑" name="albums">
-        <albums v-for="(item,index) in searchData.albums" :key="index" :album="item"></albums>
+        <albums v-for="(item,index) in searchData[2].albums" :key="index" :album="item"></albums>
       </el-tab-pane>
       <el-tab-pane label="视频" name="mvs">
         <div class="mvs">
-          <MV v-for="(item,index) in searchData.mvs" :key="index" :MVDetail="item"></MV>
+          <MV v-for="(item,index) in searchData[3].mvs" :key="index" :MVDetail="item"></MV>
         </div>
       </el-tab-pane>
       <el-tab-pane label="歌单" name="playlists">
         <simplePlaylist
-          v-for="(item,index) in searchData.playlists"
+          v-for="(item,index) in searchData[4].playlists"
           :key="index"
-          :simplePlaylist="searchData.playlists[index]"
+          :simplePlaylist="item"
         ></simplePlaylist>
       </el-tab-pane>
     </el-tabs>
@@ -63,44 +74,54 @@ export default {
     return {
       activeName: "songs",
       loading: false,
-      searchData: null,
+      searchData: [],
       searchWord: this.$route.query.searchWord,
+      totalPage: 100,
       type: [
-        { name: "songs", type: 1 },
-        { name: "artists", type: 100 },
-        { name: "albums", type: 10 },
-        { name: "mvs", type: 1004 },
-        { name: "playlists", type: 1000 }
+        { name: "songs", type: 1, offset: 0 },
+        { name: "artists", type: 100, offset: 0 },
+        { name: "albums", type: 10, offset: 0 },
+        { name: "mvs", type: 1004, offset: 0 },
+        { name: "playlists", type: 1000, offset: 0 }
       ]
     };
   },
   mounted() {
-    this.getSearchData();
+    this.getSearchData(0);
   },
   methods: {
     cancel() {
       this.$router.go(-1);
     },
     rowClick(row) {
-       this.$store.commit("changeSongIndex",row.index);
+      this.$store.commit("changeSongIndex", row.index);
       console.log(row.id);
       console.log(row.index);
       console.log(this.searchData.songs);
-       this.$store.commit("changePlaylist",this.searchData.songs);
+      this.$store.commit("changePlaylist", this.searchData.songs);
     },
-    tableRowClassName({row, rowIndex}){
-      //为表格的每行添加索引
+    tableRowClassName({ row, rowIndex }) {
+      //为表格的每行添加索引,该索引在点击行的时候使用
       row.index = rowIndex;
     },
-    async getSearchData() {
+    async getSearchData(offset) {
+      //获取搜索得到的结果
       this.loading = true;
-      let obj = new Object();
+      let arr = [];
       for (let i = 0; i < this.type.length; i++) {
-        const data = await getSearch(this.searchWord, this.type[i].type);
-        obj[this.type[i].name] = data[this.type[i].name];
+        const data = await getSearch(
+          this.searchWord,
+          this.type[i].type,
+          offset
+        );
+        arr.push(data);
       }
-      this.searchData = obj;
+      this.searchData = arr;
       this.loading = false;
+    },
+    pageChange(val) {
+      this.getSearchData(val - 1);
+      this.type[0].offset++;
     }
   }
 };
@@ -128,6 +149,14 @@ export default {
       cursor: pointer;
     }
   }
+  .song {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .block {
+      margin-top: 50px;
+    }
+  }
   .mvs {
     display: grid;
     grid-template-columns: repeat(auto-fill, 230px);
@@ -136,5 +165,10 @@ export default {
     justify-content: center;
     align-content: center;
   }
+}
+</style>
+<style lang="scss">
+.el-pager li.active {
+  color: #e83c3c;
 }
 </style>

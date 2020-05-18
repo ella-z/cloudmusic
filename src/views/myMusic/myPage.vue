@@ -64,7 +64,7 @@ export default {
         this.userInformation = userInformation;
         let userPlaylist = await getUserPlaylist(uid);
         for (let i = 0; i < userPlaylist.length; i++) { 
-          //判断创作者是否为用户，根据结果分别储存到不同的对象中
+          //判断歌单的创作者是否为用户，根据结果分别储存到不同的对象中
           if (
             userPlaylist[i].creator.nickname ===
             userInformation.profile.nickname
@@ -153,8 +153,8 @@ export default {
     .playlist-title {
       display: block;
       width: 100%;
-      height: 40px;
-      line-height: 40px;
+      height: 50px;
+      line-height: 50px;
       font-size: 18px;
       font-weight: 700;
       color: #000;
