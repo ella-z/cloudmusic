@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getUserInformation, getUserPlaylist } from "../../api/getUser";
+import { getUserInformation, getUserPlaylist } from "../../api/user";
 import simplePlaylist from "../../components/playlist/simplePlaylist"
 
 export default {

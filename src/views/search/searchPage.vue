@@ -9,7 +9,7 @@
     </div>
 
     <el-tabs v-model="activeName" v-if="searchData.length!==0">
-      <el-tab-pane label="单曲" name="songs" class="song">
+      <el-tab-pane label="单曲" name="songs" class="pane">
         <el-table
           :data="searchData[0].songs"
           style="width: 100%"
@@ -30,22 +30,29 @@
           <el-pagination
             layout="prev, pager, next"
             :total="searchData[0].songCount*10"
-            @current-change="pageChange"
+            @current-change="songsPageChange"
           ></el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="歌手" name="artists">
+      <el-tab-pane label="歌手" name="artists" class="pane">
         <artists v-for="(item,index) in searchData[1].artists " :key="index" :artist="item"></artists>
+        <div class="block">
+          <el-pagination
+            layout="prev, pager, next"
+            :total="searchData[1].artistCount*10"
+            @current-change="artistsPageChange"
+          ></el-pagination>
+        </div>
       </el-tab-pane>
-      <el-tab-pane label="专辑" name="albums">
+      <el-tab-pane label="专辑" name="albums" class="pane">
         <albums v-for="(item,index) in searchData[2].albums" :key="index" :album="item"></albums>
       </el-tab-pane>
-      <el-tab-pane label="视频" name="mvs">
+      <el-tab-pane label="视频" name="mvs" class="pane">
         <div class="mvs">
           <MV v-for="(item,index) in searchData[3].mvs" :key="index" :MVDetail="item"></MV>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="歌单" name="playlists">
+      <el-tab-pane label="歌单" name="playlists" class="pane"> 
         <simplePlaylist
           v-for="(item,index) in searchData[4].playlists"
           :key="index"
@@ -86,8 +93,8 @@ export default {
       ]
     };
   },
-  mounted() {
-    this.getSearchData(0);
+  async mounted() {
+    await this.getSearchData(0); //异步操作
   },
   methods: {
     cancel() {
@@ -95,10 +102,7 @@ export default {
     },
     rowClick(row) {
       this.$store.commit("changeSongIndex", row.index);
-      console.log(row.id);
-      console.log(row.index);
-      console.log(this.searchData.songs);
-      this.$store.commit("changePlaylist", this.searchData.songs);
+      this.$store.commit("changePlaylist", this.searchData[0].songs);
     },
     tableRowClassName({ row, rowIndex }) {
       //为表格的每行添加索引,该索引在点击行的时候使用
@@ -119,9 +123,14 @@ export default {
       this.searchData = arr;
       this.loading = false;
     },
-    pageChange(val) {
+    songsPageChange(val) { //当歌曲页数改变时，获取新的歌曲数据
+      //更新呢新页面的数据
       this.getSearchData(val - 1);
-      this.type[0].offset++;
+      this.type[0].offset = val - 1;
+    },
+    artistsPageChange(val){//当歌手页数改变时，获取新的歌手数据
+      this.getSearchData(val-1);
+      this.type[1].offset = val - 1;
     }
   }
 };
@@ -149,7 +158,7 @@ export default {
       cursor: pointer;
     }
   }
-  .song {
+  .pane {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -158,6 +167,7 @@ export default {
     }
   }
   .mvs {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, 230px);
     column-gap: 20px;

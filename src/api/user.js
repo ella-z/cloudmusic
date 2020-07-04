@@ -25,9 +25,9 @@ export function getUserInformation(uid) {
             url, method: 'get', params: {
                 uid
             }
-        }).then(res=>{
+        }).then(res => {
             resolve(res.data);
-        }).catch(err=>{
+        }).catch(err => {
             reject(err.data);
         })
     });
@@ -39,25 +39,71 @@ export function getUserDetail() {
     return new Promise((resolve, reject) => {
         axios({
             url, method: 'get'
-        }).then(res=>{
+        }).then(res => {
             resolve(res.data);
-        }).catch(err=>{
+        }).catch(err => {
             reject(err.data);
         })
     });
 }
 
-export function getUserPlaylist(uid){
+export function getUserPlaylist(uid) {
+    //获取用户的歌单
     const url = "http://localhost:3000/user/playlist";
     return new Promise((resolve, reject) => {
         axios({
             url, method: 'get', params: {
                 uid
             }
-        }).then(res=>{
+        }).then(res => {
             resolve(res.data.playlist);
-        }).catch(err=>{
+        }).catch(err => {
             reject(err.data);
         })
     });
+}
+
+export function checkPhone(phone) {
+    const url = "http://localhost:3000/cellphone/existence/check";
+    return new Promise((resolve, reject) => {
+        axios({
+            url, method: 'get', params: {
+                phone
+            }
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    });
+}
+
+export function sentCaptcha(phone) {
+    const url = "http://localhost:3000/captcha/sent";
+    return new Promise((resolve, reject) => {
+        axios({
+            url, method: 'get', params: {
+                phone
+            }
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    });
+}
+
+export function register(phone, password, captcha, nickname) {
+    const url = "http://localhost:3000/register/cellphone";
+    return new Promise((resolve, reject) => {
+        axios({
+            url, method: 'post', params: {
+                phone, password, captcha, nickname
+            }
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
 }

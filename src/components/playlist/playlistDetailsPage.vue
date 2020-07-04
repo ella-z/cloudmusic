@@ -24,20 +24,25 @@
         </div>
         <div class="playlist-tags playlist">
           <span>标签：</span>
-          <a href v-for="(item,index) in tags" :key="index" > {{item}} / </a>
+          <a href v-for="(item,index) in tags" :key="index">{{item}} /</a>
         </div>
         <div class="playlist-recommend">简介：{{description}}</div>
       </div>
     </nav>
     <div class="playlist-details">
-      <el-tabs v-model="activeName" class="tab" >
+      <el-tabs v-model="activeName" class="tab">
         <el-tab-pane label="歌曲列表" name="playlist" class="playlist">
-          <el-table :data="tableData" style="width: 100%" :stripe="true" :row-class-name="tableRowClassName" @row-click="handleClick">
+          <el-table
+            :data="tableData"
+            style="width: 100%"
+            :stripe="true"
+            :row-class-name="tableRowClassName"
+            @row-click="handleClick"
+          >
             <el-table-column type="index" width="50"></el-table-column>
             <el-table-column prop="name" label="音乐标题" sortable width="500"></el-table-column>
             <el-table-column prop="artist" label="歌手" sortable width="300"></el-table-column>
             <el-table-column prop="album" label="专辑" sortable width="300"></el-table-column>
-            <!--<el-table-column prop="duration" label="时长" sortable width="100"></el-table-column>-->
           </el-table>
         </el-tab-pane>
         <el-tab-pane :label="'评论('+commentCount+')'" name="comment">
@@ -54,10 +59,10 @@
 <script>
 //导入js方法的时候要用{}括起来！！！
 import { getPlaylist, getPlaylistComment } from "../../api/playlistDetails";
-//import { getMusic } from "../api/getData";
+import { getMusicDetail } from "../../api/getData";
 import comment from "../../components/comments";
 
-export default { 
+export default {
   components: {
     comment
   },
@@ -91,9 +96,11 @@ export default {
     async getPlaylistData() {
       this.loading = true;
       const playlist = await getPlaylist(
+        //根据playlistID获取playlist相关的详细数据
         "http://localhost:3000/playlist/detail",
         this.playlistID
       );
+
       try {
         let {
           name,
@@ -105,25 +112,6 @@ export default {
           createTime
         } = playlist;
         let { avatarUrl, nickname } = playlist.creator;
-        
-        for (let i = 0; i < playlist.tracks.length; i++) {
-          if (playlist.tracks[i].ar.length === 1) {
-            let musicList =playlist.tracks[i];
-            this.tableData.push({
-              id: musicList.id,
-              picUrl:musicList.al.picUrl,
-              name: musicList.name,
-              artist: musicList.ar[0].name,
-              song:{
-                album:{
-                  name:musicList.al.name
-                },
-                artists:musicList.ar
-              },
-              album: musicList.al.name
-            });
-          }
-        }
         this.playlistName = name;
         this.trackCount = trackCount;
         this.playCount = playCount;
@@ -132,7 +120,7 @@ export default {
         this.tags = tags;
         this.description = description;
         this.commentCount = commentCount;
-        let time = new Date(createTime);
+        let time = new Date(createTime); //转换创建的时间的格式
         this.createTime =
           time.getFullYear() +
           "-" +
@@ -141,32 +129,66 @@ export default {
             : time.getMonth() + 1) +
           "-" +
           (time.getDate() < 10 ? "0" + time.getDate() : time.getDate());
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
-        console.log(error);
-      }
 
-      let commentData = await getPlaylistComment(
-        "http://localhost:3000/comment/playlist",
-        this.playlistID,
-        playlist.commentCount
-      );
-      try {
+        let ids = "";
+        for (let i = 0; i < playlist.trackIds.length; i++) {
+          //将playlist中包含的所有的歌曲id集成歌曲id字符串
+          if (i === playlist.trackIds.length - 1) {
+            ids += playlist.trackIds[i].id;
+          } else {
+            ids += playlist.trackIds[i].id + ",";
+          }
+        }
+
+        let getMusicList = await getMusicDetail(ids); //根据歌曲id字符串请求所有歌曲的详细信息
+
+        for (let i = 0; i < getMusicList.songs.length; i++) {
+          //将所有歌曲的详细信息转换为playlist标准的格式（以免在别的地方调用playlist因为格式不一致渲染页面的时候报错），并且push到tableData中
+          let musicList = getMusicList.songs[i];
+          let artist=musicList.ar[0].name;
+          if(getMusicList.songs[i].ar.length!==1){
+            for(let j=1;j<getMusicList.songs[i].ar.length;j++){
+              artist+='/'+musicList.ar[j].name;
+            }
+          }
+          this.tableData.push({
+            id: musicList.id,
+            picUrl: musicList.al.picUrl,
+            name: musicList.name,
+            artist,
+            song: {
+              album: {
+                name: musicList.al.name
+              },
+              artists: musicList.ar
+            },
+            album: musicList.al.name
+          });
+        }
+
+        let commentData = await getPlaylistComment(
+          //获取当前歌单的评论
+          "http://localhost:3000/comment/playlist",
+          this.playlistID,
+          playlist.commentCount
+        );
         let { hotComments, comments } = commentData;
         this.hotComments = hotComments;
         this.comments = comments;
+
+        this.loading = false;
       } catch (error) {
+        this.loading = false;
         console.log(error);
       }
     },
-    tableRowClassName ({row, rowIndex}) {
-        //把每一行的索引放进row
-        row.index = rowIndex;
-      },
-    handleClick(row){
-      this.$store.commit("changeSongIndex",row.index);
-      this.$store.commit("changePlaylist",this.tableData);
+    tableRowClassName({ row, rowIndex }) {
+      //把每一行的索引放进row
+      row.index = rowIndex;
+    },
+    handleClick(row) {
+      this.$store.commit("changeSongIndex", row.index);
+      this.$store.commit("changePlaylist", this.tableData);
     }
   }
 };
@@ -211,7 +233,7 @@ export default {
       grid-template-rows: repeat(auto-fill, 75px);
       justify-items: start;
       align-items: center;
-      
+
       .playlist {
         display: flex;
         flex-direction: row;
@@ -240,7 +262,7 @@ export default {
           border-radius: 50%;
           margin-right: 15px;
         }
-        span{
+        span {
           margin-right: 15px;
         }
       }

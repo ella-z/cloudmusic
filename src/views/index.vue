@@ -60,7 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  width: 100vw;
+  width: 100%;
   height: 35px;
   display: flex;
   flex-direction: row;
@@ -99,7 +99,7 @@ main {
     position: relative;
     left: 120px;
     top:35px;
-    width: calc(100vw - 130px);
+    width: calc(100% - 130px);
   }
 }
 </style>

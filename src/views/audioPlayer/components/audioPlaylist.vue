@@ -59,8 +59,8 @@ export default {
 
 <style lang="scss" scoped>
 .audioPlaylist {
-  width: 40%;
-  height: 60%;
+  width: 600px;
+  height: 550px;
   position: fixed;
   right: 0;
   bottom: 40px;

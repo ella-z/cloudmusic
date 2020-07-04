@@ -36,7 +36,7 @@
 
 <script>
 import errorMessage from "../../components/errorMessage";
-import { postUser } from "../../api/getUser";
+import { postUser } from "../../api/user";
 
 export default {
   components: {
