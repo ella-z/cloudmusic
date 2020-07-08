@@ -88,7 +88,8 @@
 <img src="http://zhangzqcloud.cn/project-images/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E7%94%A8%E6%88%B7%E8%AF%A6%E7%BB%86%E9%A1%B5%E9%9D%A2.PNG" width="700px" height="400px">
 
 
-
+### 接口参考
+   - https://github.com/Binaryify/NeteaseCloudMusicApi
 
 
 
